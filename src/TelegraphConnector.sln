@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33103.184
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TelegraphConnector", "TelegraphConnector\TelegraphConnector.csproj", "{6BA9596D-424E-4A4D-B6D4-F0030D66C47B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TelegraphConnector.Test", "TelegraphConnector.Test\TelegraphConnector.Test.csproj", "{8CA1F759-27E5-4C06-A75C-1DC33CE970F5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6BA9596D-424E-4A4D-B6D4-F0030D66C47B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6BA9596D-424E-4A4D-B6D4-F0030D66C47B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6BA9596D-424E-4A4D-B6D4-F0030D66C47B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6BA9596D-424E-4A4D-B6D4-F0030D66C47B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8CA1F759-27E5-4C06-A75C-1DC33CE970F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8CA1F759-27E5-4C06-A75C-1DC33CE970F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8CA1F759-27E5-4C06-A75C-1DC33CE970F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8CA1F759-27E5-4C06-A75C-1DC33CE970F5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4A36D75F-FAB6-4E35-80D5-85E47084BE8A}
+	EndGlobalSection
+EndGlobal
