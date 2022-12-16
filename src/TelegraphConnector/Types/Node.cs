@@ -8,7 +8,7 @@ namespace TelegraphConnector.Types
     [JsonConverter(typeof(NodeConverter))]
     public class Node : AbstractTypes
     {
-        public Node() { }
+        internal Node() { }
 
         public Node(string text)
         {

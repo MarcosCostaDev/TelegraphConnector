@@ -6,17 +6,30 @@
     <Nullable>enable</Nullable>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Title>Telegraph Connector</Title>
-    <Description>Telegra.ph API for .net
-This package allow developers to connect the Telegra.ph API and use its features for create beautiful pages in the Telegram component</Description>
+    <Description>
+      Telegra.ph API for .net
+      This package allow developers to connect the Telegra.ph API and use its features for create beautiful pages in the Telegram component
+    </Description>
     <PackageProjectUrl>https://github.com/MarcosCostaDev/TelegraphConnector</PackageProjectUrl>
     <Copyright>Marcos Costa Dev © 2022</Copyright>
     <RepositoryUrl>https://github.com/MarcosCostaDev/TelegraphConnector.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>Telegram; Telegraph; chat; page</PackageTags>
+    <Company>Marcos Costa Dev</Company>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <GeneratedAssemblyInfoFile>AssemblyInfo.cs</GeneratedAssemblyInfoFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+      <_Parameter1>TelegraphConnector.Test</_Parameter1>
+    </AssemblyAttribute>
   </ItemGroup>
 
 </Project>
