@@ -22,31 +22,8 @@ namespace TelegraphConnector.Test.Api
         [MemberData(nameof(CreateAccountAsync_MemberData))]
         public async void CreateAccountAsync(Account account)
         {
-            // ARRANGE
-            var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Loose);
-            handlerMock
-               .Protected()
-               // Setup the PROTECTED method to mock
-               .Setup<Task<HttpResponseMessage>>(
-                  "SendAsync",
-                  ItExpr.IsAny<HttpRequestMessage>(),
-                  ItExpr.IsAny<CancellationToken>()
-               )
-               // prepare the expected response of the mocked http call
-               .ReturnsAsync(new HttpResponseMessage()
-               {
-                   StatusCode = HttpStatusCode.OK,
-                   Content = new StringContent(GetTextFromFile("account_create.json"), Encoding.UTF8, "application/json"),
-               })
-               .Verifiable();
-
-            // use real http client with mocked handler here
-            var httpClient = new HttpClient(handlerMock.Object)
-            {
-                BaseAddress = new Uri("http://test.com/"),
-            };
-            var moqClient = new Mock<ITelegraphClient>();
-            moqClient.Setup(m => m.GetHttpClient()).Returns(httpClient);
+            
+            Mock<ITelegraphClient> moqClient = CreateMockClient("account_create.json");
 
             var accountCommands = new AccountCommands(moqClient.Object);
 
@@ -73,31 +50,8 @@ namespace TelegraphConnector.Test.Api
         [MemberData(nameof(EditAccountAsync_MemberData))]
         public async void EditAccountAsync(Account account)
         {
-            // ARRANGE
-            var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Loose);
-            handlerMock
-               .Protected()
-               // Setup the PROTECTED method to mock
-               .Setup<Task<HttpResponseMessage>>(
-                  "SendAsync",
-                  ItExpr.IsAny<HttpRequestMessage>(),
-                  ItExpr.IsAny<CancellationToken>()
-               )
-               // prepare the expected response of the mocked http call
-               .ReturnsAsync(new HttpResponseMessage()
-               {
-                   StatusCode = HttpStatusCode.OK,
-                   Content = new StringContent(GetTextFromFile("account_edit.json"), Encoding.UTF8, "application/json"),
-               })
-               .Verifiable();
-
-            // use real http client with mocked handler here
-            var httpClient = new HttpClient(handlerMock.Object)
-            {
-                BaseAddress = new Uri("http://test.com/"),
-            };
-            var moqClient = new Mock<ITelegraphClient>();
-            moqClient.Setup(m => m.GetHttpClient()).Returns(httpClient);
+           
+            Mock<ITelegraphClient> moqClient = CreateMockClient("account_edit.json");
 
             var accountCommands = new AccountCommands(moqClient.Object);
 
@@ -123,31 +77,7 @@ namespace TelegraphConnector.Test.Api
         [MemberData(nameof(GetAccountInfoAsync_MemberData))]
         public async void GetAccountInfoAsync(Account account)
         {
-            // ARRANGE
-            var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Loose);
-            handlerMock
-               .Protected()
-               // Setup the PROTECTED method to mock
-               .Setup<Task<HttpResponseMessage>>(
-                  "SendAsync",
-                  ItExpr.IsAny<HttpRequestMessage>(),
-                  ItExpr.IsAny<CancellationToken>()
-               )
-               // prepare the expected response of the mocked http call
-               .ReturnsAsync(new HttpResponseMessage()
-               {
-                   StatusCode = HttpStatusCode.OK,
-                   Content = new StringContent(GetTextFromFile("account_info.json"), Encoding.UTF8, "application/json"),
-               })
-               .Verifiable();
-
-            // use real http client with mocked handler here
-            var httpClient = new HttpClient(handlerMock.Object)
-            {
-                BaseAddress = new Uri("http://test.com/"),
-            };
-            var moqClient = new Mock<ITelegraphClient>();
-            moqClient.Setup(m => m.GetHttpClient()).Returns(httpClient);
+            Mock<ITelegraphClient> moqClient = CreateMockClient("account_info.json");
 
             var accountCommands = new AccountCommands(moqClient.Object);
 
@@ -171,31 +101,7 @@ namespace TelegraphConnector.Test.Api
         [MemberData(nameof(RevokeAccessAsync_MemberData))]
         public async void RevokeAccessAsync(Account account)
         {
-            // ARRANGE
-            var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Loose);
-            handlerMock
-               .Protected()
-               // Setup the PROTECTED method to mock
-               .Setup<Task<HttpResponseMessage>>(
-                  "SendAsync",
-                  ItExpr.IsAny<HttpRequestMessage>(),
-                  ItExpr.IsAny<CancellationToken>()
-               )
-               // prepare the expected response of the mocked http call
-               .ReturnsAsync(new HttpResponseMessage()
-               {
-                   StatusCode = HttpStatusCode.OK,
-                   Content = new StringContent(GetTextFromFile("account_revoke.json"), Encoding.UTF8, "application/json"),
-               })
-               .Verifiable();
-
-            // use real http client with mocked handler here
-            var httpClient = new HttpClient(handlerMock.Object)
-            {
-                BaseAddress = new Uri("http://test.com/"),
-            };
-            var moqClient = new Mock<ITelegraphClient>();
-            moqClient.Setup(m => m.GetHttpClient()).Returns(httpClient);
+            Mock<ITelegraphClient> moqClient = CreateMockClient("account_revoke.json");
 
             var accountCommands = new AccountCommands(moqClient.Object);
 

@@ -24,31 +24,8 @@ namespace TelegraphConnector.Test.Api
         [MemberData(nameof(CreatePageAsync_MemberData))]
         public async void CreatePageAsync(string accessToken, Page page)
         {
-            // ARRANGE
-            var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Loose);
-            handlerMock
-               .Protected()
-               // Setup the PROTECTED method to mock
-               .Setup<Task<HttpResponseMessage>>(
-                  "SendAsync",
-                  ItExpr.IsAny<HttpRequestMessage>(),
-                  ItExpr.IsAny<CancellationToken>()
-               )
-               // prepare the expected response of the mocked http call
-               .ReturnsAsync(new HttpResponseMessage()
-               {
-                   StatusCode = HttpStatusCode.OK,
-                   Content = new StringContent(GetTextFromFile("page_create.json"), Encoding.UTF8, "application/json"),
-               })
-               .Verifiable();
-
-            // use real http client with mocked handler here
-            var httpClient = new HttpClient(handlerMock.Object)
-            {
-                BaseAddress = new Uri("http://test.com/"),
-            };
-            var moqClient = new Mock<ITelegraphClient>();
-            moqClient.Setup(m => m.GetHttpClient()).Returns(httpClient);
+            
+            Mock<ITelegraphClient> moqClient = CreateMockClient("page_create.json");
 
             var pageCommands = new PageCommands(moqClient.Object);
 
@@ -84,29 +61,8 @@ namespace TelegraphConnector.Test.Api
         [MemberData(nameof(EditPageAsync_MemberData))]
         public async void EditPageAsync(string accessToken, Page page)
         {
-            // ARRANGE
-            var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Loose);
-            handlerMock
-               .Protected()
-               .Setup<Task<HttpResponseMessage>>(
-                  "SendAsync",
-                  ItExpr.IsAny<HttpRequestMessage>(),
-                  ItExpr.IsAny<CancellationToken>()
-               )
-               .ReturnsAsync(new HttpResponseMessage()
-               {
-                   StatusCode = HttpStatusCode.OK,
-                   Content = new StringContent(GetTextFromFile("page_edit.json"), Encoding.UTF8, "application/json"),
-               })
-               .Verifiable();
-
-            var httpClient = new HttpClient(handlerMock.Object)
-            {
-                BaseAddress = new Uri("http://test.com/"),
-            };
-
-            var moqClient = new Mock<ITelegraphClient>();
-            moqClient.Setup(m => m.GetHttpClient()).Returns(httpClient);
+            
+            Mock<ITelegraphClient> moqClient = CreateMockClient("page_edit.json");
 
             var pageCommands = new PageCommands(moqClient.Object);
 
@@ -138,29 +94,8 @@ namespace TelegraphConnector.Test.Api
         [MemberData(nameof(GetPageAsync_MemberData))]
         public async void GetPageAsync(string path)
         {
-            // ARRANGE
-            var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Loose);
-            handlerMock
-               .Protected()
-               .Setup<Task<HttpResponseMessage>>(
-                  "SendAsync",
-                  ItExpr.IsAny<HttpRequestMessage>(),
-                  ItExpr.IsAny<CancellationToken>()
-               )
-               .ReturnsAsync(new HttpResponseMessage()
-               {
-                   StatusCode = HttpStatusCode.OK,
-                   Content = new StringContent(GetTextFromFile("page_get.json"), Encoding.UTF8, "application/json"),
-               })
-               .Verifiable();
 
-            var httpClient = new HttpClient(handlerMock.Object)
-            {
-                BaseAddress = new Uri("http://test.com/"),
-            };
-
-            var moqClient = new Mock<ITelegraphClient>();
-            moqClient.Setup(m => m.GetHttpClient()).Returns(httpClient);
+            Mock<ITelegraphClient> moqClient = CreateMockClient("page_get.json");
 
             var pageCommands = new PageCommands(moqClient.Object);
 
@@ -197,28 +132,7 @@ namespace TelegraphConnector.Test.Api
         public async void GetPageListAsync(string accessToken, int offset, int limit)
         {
             // ARRANGE
-            var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Loose);
-            handlerMock
-               .Protected()
-               .Setup<Task<HttpResponseMessage>>(
-                  "SendAsync",
-                  ItExpr.IsAny<HttpRequestMessage>(),
-                  ItExpr.IsAny<CancellationToken>()
-               )
-               .ReturnsAsync(new HttpResponseMessage()
-               {
-                   StatusCode = HttpStatusCode.OK,
-                   Content = new StringContent(GetTextFromFile("page_get_list.json"), Encoding.UTF8, "application/json"),
-               })
-               .Verifiable();
-
-            var httpClient = new HttpClient(handlerMock.Object)
-            {
-                BaseAddress = new Uri("http://test.com/"),
-            };
-
-            var moqClient = new Mock<ITelegraphClient>();
-            moqClient.Setup(m => m.GetHttpClient()).Returns(httpClient);
+            Mock<ITelegraphClient> moqClient = CreateMockClient("page_get_list.json");
 
             var pageCommands = new PageCommands(moqClient.Object);
 
@@ -253,34 +167,14 @@ namespace TelegraphConnector.Test.Api
             sut.Result.Pages.ElementAt(2).CanEdit.Should().BeTrue();
         }
 
+       
 
         [Theory]
         [InlineData("token", "path", 2022, 12, 01, 12)]
         public async void GetViewsAsync(string accessToken, string path, int year, int month, int day, int hour)
         {
-            // ARRANGE
-            var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Loose);
-            handlerMock
-               .Protected()
-               .Setup<Task<HttpResponseMessage>>(
-                  "SendAsync",
-                  ItExpr.IsAny<HttpRequestMessage>(),
-                  ItExpr.IsAny<CancellationToken>()
-               )
-               .ReturnsAsync(new HttpResponseMessage()
-               {
-                   StatusCode = HttpStatusCode.OK,
-                   Content = new StringContent(GetTextFromFile("page_get_views.json"), Encoding.UTF8, "application/json"),
-               })
-               .Verifiable();
 
-            var httpClient = new HttpClient(handlerMock.Object)
-            {
-                BaseAddress = new Uri("http://test.com/"),
-            };
-
-            var moqClient = new Mock<ITelegraphClient>();
-            moqClient.Setup(m => m.GetHttpClient()).Returns(httpClient);
+            Mock<ITelegraphClient> moqClient = CreateMockClient("page_get_views.json");
 
             var pageCommands = new PageCommands(moqClient.Object);
 
@@ -303,29 +197,7 @@ namespace TelegraphConnector.Test.Api
         [MemberData(nameof(GetViewsWithDateTimeAsync_MemberData))]
         public async void GetViewsWithDateTimeAsync(string accessToken, string path, DateTime date)
         {
-            // ARRANGE
-            var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Loose);
-            handlerMock
-               .Protected()
-               .Setup<Task<HttpResponseMessage>>(
-                  "SendAsync",
-                  ItExpr.IsAny<HttpRequestMessage>(),
-                  ItExpr.IsAny<CancellationToken>()
-               )
-               .ReturnsAsync(new HttpResponseMessage()
-               {
-                   StatusCode = HttpStatusCode.OK,
-                   Content = new StringContent(GetTextFromFile("page_get_views.json"), Encoding.UTF8, "application/json"),
-               })
-               .Verifiable();
-
-            var httpClient = new HttpClient(handlerMock.Object)
-            {
-                BaseAddress = new Uri("http://test.com/"),
-            };
-
-            var moqClient = new Mock<ITelegraphClient>();
-            moqClient.Setup(m => m.GetHttpClient()).Returns(httpClient);
+            Mock<ITelegraphClient> moqClient = CreateMockClient("page_get_views.json");
 
             var pageCommands = new PageCommands(moqClient.Object);
 
