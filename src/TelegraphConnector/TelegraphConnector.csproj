@@ -1,9 +1,18 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Title>Telegraph Connector</Title>
+    <Description>Telegra.ph API for .net
+This package allow developers to connect the Telegra.ph API and use its features for create beautiful pages in the Telegram component</Description>
+    <PackageProjectUrl>https://github.com/MarcosCostaDev/TelegraphConnector</PackageProjectUrl>
+    <Copyright>Marcos Costa Dev © 2022</Copyright>
+    <RepositoryUrl>https://github.com/MarcosCostaDev/TelegraphConnector.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>Telegram; Telegraph; chat; page</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
