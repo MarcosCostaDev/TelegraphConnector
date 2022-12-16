@@ -291,5 +291,50 @@ namespace TelegraphConnector.Test.Api
             sut.Result.Views.Should().Be(40);
 
         }
+
+
+        public static IEnumerable<object[]> GetViewsWithDateTimeAsync_MemberData()
+        {
+
+            yield return new object[] { "token", "path", DateTime.Now };
+
+        }
+        [Theory]
+        [MemberData(nameof(GetViewsWithDateTimeAsync_MemberData))]
+        public async void GetViewsWithDateTimeAsync(string accessToken, string path, DateTime date)
+        {
+            // ARRANGE
+            var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Loose);
+            handlerMock
+               .Protected()
+               .Setup<Task<HttpResponseMessage>>(
+                  "SendAsync",
+                  ItExpr.IsAny<HttpRequestMessage>(),
+                  ItExpr.IsAny<CancellationToken>()
+               )
+               .ReturnsAsync(new HttpResponseMessage()
+               {
+                   StatusCode = HttpStatusCode.OK,
+                   Content = new StringContent(GetTextFromFile("page_get_views.json"), Encoding.UTF8, "application/json"),
+               })
+               .Verifiable();
+
+            var httpClient = new HttpClient(handlerMock.Object)
+            {
+                BaseAddress = new Uri("http://test.com/"),
+            };
+
+            var moqClient = new Mock<ITelegraphClient>();
+            moqClient.Setup(m => m.GetHttpClient()).Returns(httpClient);
+
+            var pageCommands = new PageCommands(moqClient.Object);
+
+            var sut = await pageCommands.GetViewsAsync(accessToken, path, date);
+
+            // Assert
+            sut.Ok.Should().BeTrue();
+            sut.Result.Views.Should().Be(40);
+
+        }
     }
 }
