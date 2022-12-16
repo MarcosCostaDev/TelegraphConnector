@@ -1,0 +1,20 @@
+﻿{
+  "ok": true,
+  "result": {
+    "path": "Sample-Page-12-16-67",
+    "url": "https://telegra.ph/Sample-Page-12-16-67",
+    "title": "Sample Page",
+    "description": "",
+    "author_name": "Anonymous",
+    "content": [
+      {
+        "tag": "p",
+        "children": [
+          "Hello, world!"
+        ]
+      }
+    ],
+    "views": 0,
+    "can_edit": true
+  }
+}

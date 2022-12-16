@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using System.Reflection;
 using System.Web;
 using TelegraphConnector.Types;
@@ -33,9 +34,9 @@ namespace TelegraphConnector.Api
         {
             var serialized = JsonConvert.SerializeObject(obj);
 
-            var dictionary = JsonConvert.DeserializeObject<IDictionary<string, string>>(serialized);
+            var dictionary = JsonConvert.DeserializeObject<IDictionary<string, object>>(serialized);
 
-            var step3 = dictionary.Where(p => !string.IsNullOrEmpty(p.Value)).Select(x => HttpUtility.UrlEncode(x.Key) + "=" + HttpUtility.UrlEncode(x.Value));
+            var step3 = dictionary.Where(p => !string.IsNullOrEmpty(p.Value?.ToString())).Select(x => HttpUtility.UrlEncode(x.Key) + "=" + HttpUtility.UrlEncode(x.Value?.ToString()));
 
             return string.Join("&", step3);
         }
@@ -60,18 +61,32 @@ namespace TelegraphConnector.Api
         }
     }
 
-
-    public class TelegraphResult<TType> where TType : AbstractTypes
+    public class NonPublicPropertiesResolver : DefaultContractResolver
     {
-        public bool Ok { get; set; }
-        public string Error { get; set; }
-        public TType Result { get; set; }
+        protected override JsonProperty CreateProperty(MemberInfo member, MemberSerialization memberSerialization)
+        {
+            var prop = base.CreateProperty(member, memberSerialization);
+            if (member is PropertyInfo pi)
+            {
+                prop.Readable = (pi.GetMethod != null);
+                prop.Writable = (pi.SetMethod != null);
+            }
+            return prop;
+        }
     }
-    public class TelegraphResult
+
+
+    public class TelegraphResponse<TType> where TType : AbstractTypes
     {
-        public bool Ok { get; set; }
-        public string Error { get; set; }
-        public object Result { get; set; }
+        public bool Ok { get; private set; }
+        public string Error { get; private set; }
+        public TType Result { get; private set; }
+    }
+    public class TelegraphResponse
+    {
+        public bool Ok { get; private set; }
+        public string Error { get; private set; }
+        public dynamic Result { get; private set; }
     }
 
 }

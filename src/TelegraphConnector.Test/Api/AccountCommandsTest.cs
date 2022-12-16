@@ -2,22 +2,15 @@
 using Moq;
 using Moq.Protected;
 using System.Net;
-using System.Reflection;
 using System.Text;
 using TelegraphConnector.Api;
 using TelegraphConnector.Types;
 
 namespace TelegraphConnector.Test.Api
 {
-    public class AccountCommandsTest
+    public class AccountCommandsTest : AbstractCommandTest
     {
-        public static string GetTextFromFile(string relativePath)
-        {
-            var codeBaseUrl = new Uri(Assembly.GetExecutingAssembly().Location);
-            var codeBasePath = Uri.UnescapeDataString(codeBaseUrl.AbsolutePath);
-            var dirPath = Path.GetDirectoryName(codeBasePath);
-            return File.ReadAllText(Path.Combine(dirPath, "Api", "MockResponses", relativePath));
-        }
+      
 
         public static IEnumerable<object[]> CreateAccountAsync_MemberData()
         {

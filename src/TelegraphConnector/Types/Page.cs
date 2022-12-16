@@ -12,11 +12,11 @@ namespace TelegraphConnector.Types
     {
         protected Page() { }
 
-        public static Page Create(Account account, string title, NodeElement content, bool returnContent = false)
+        public static Page Create(Account account, string title, Node content, bool returnContent = false)
         {
             return Create(title, account.AuthorName, account.AuthorUrl, content, returnContent);
         }
-        public static Page Create(string title, string authorName, string authorUrl, NodeElement content, bool returnContent = false)
+        public static Page Create(string title, string authorName, string authorUrl, Node content, bool returnContent = false)
         {
             var page = new Page()
             {
@@ -30,12 +30,12 @@ namespace TelegraphConnector.Types
             return page;
         }
 
-        public static Page Edit(Account account, string path, string title, NodeElement content, bool returnContent = false)
+        public static Page Edit(Account account, string path, string title, Node content, bool returnContent = false)
         {
             return Edit(path, title, account.AuthorName, account.AuthorUrl, content, returnContent);
         }
 
-        public static Page Edit(string path, string title, string authorName, string authorUrl, NodeElement content, bool returnContent = false)
+        public static Page Edit(string path, string title, string authorName, string authorUrl, Node content, bool returnContent = false)
         {
             var page = new Page()
             {
@@ -79,7 +79,7 @@ namespace TelegraphConnector.Types
         public string AuthorUrl { get; private set; }
         [JsonProperty("image_url")]
         public string ImageUrl { get; private set; }
-        public NodeElement Content { get; private set; }
+        public Node Content { get; private set; }
         public int Views { get; private set; }
         [JsonProperty("can_edit")]
         public bool CanEdit { get; private set; }

@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
@@ -13,9 +13,29 @@
     <None Remove="Api\MockResponses\account_edit.json" />
     <None Remove="Api\MockResponses\account_info.json" />
     <None Remove="Api\MockResponses\account_revoke.json" />
+    <None Remove="Api\MockResponses\page_create.json" />
+    <None Remove="Api\MockResponses\page_edit.json" />
+    <None Remove="Api\MockResponses\page_get.json" />
+    <None Remove="Api\MockResponses\page_get_list.json" />
+    <None Remove="Api\MockResponses\page_get_views.json" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Api\MockResponses\page_get_views.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Api\MockResponses\page_get_list.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Api\MockResponses\page_get.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Api\MockResponses\page_edit.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Api\MockResponses\page_create.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Api\MockResponses\account_revoke.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

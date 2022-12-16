@@ -5,7 +5,7 @@ using TelegraphConnector.Types;
 
 namespace TelegraphConnector.Helpers
 {
-    internal static class AttrValues
+    internal static class AttributeExtensions
     {
         public static string DescriptionAttr<T>(this T source) where T : AbstractTypes
         {

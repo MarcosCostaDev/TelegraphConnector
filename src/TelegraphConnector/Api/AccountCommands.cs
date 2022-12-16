@@ -16,8 +16,13 @@ namespace TelegraphConnector.Api
         public AccountCommands(ITelegraphClient? telegraphClient = null)
         {
             _telegraphClient = telegraphClient ?? new TelegraphClient();
+
+            JsonConvert.DefaultSettings = () => new JsonSerializerSettings
+            {
+                ContractResolver = new NonPublicPropertiesResolver()
+            };
         }
-        public async Task<TelegraphResult<Account>> CreateAccountAsync(Account account, CancellationToken? cancellationToken = null)
+        public async Task<TelegraphResponse<Account>> CreateAccountAsync(Account account, CancellationToken? cancellationToken = null)
         {
             using var httpClient = _telegraphClient.GetHttpClient();
 
@@ -27,11 +32,11 @@ namespace TelegraphConnector.Api
 
             var apiResult = await response.Content.ReadAsStringAsync(cancellationToken: cancellationToken.GetValueOrDefault());
 
-            return JsonConvert.DeserializeObject<TelegraphResult<Account>>(apiResult);
+            return JsonConvert.DeserializeObject<TelegraphResponse<Account>>(apiResult);
 
         }
 
-        public async Task<TelegraphResult<Account>> EditAccountInfoAsync(Account account, CancellationToken? cancellationToken = null)
+        public async Task<TelegraphResponse<Account>> EditAccountInfoAsync(Account account, CancellationToken? cancellationToken = null)
         {
             using var httpClient = _telegraphClient.GetHttpClient();
 
@@ -41,10 +46,10 @@ namespace TelegraphConnector.Api
 
             var apiResult = await response.Content.ReadAsStringAsync(cancellationToken: cancellationToken.GetValueOrDefault());
 
-            return JsonConvert.DeserializeObject<TelegraphResult<Account>>(apiResult);
+            return JsonConvert.DeserializeObject<TelegraphResponse<Account>>(apiResult);
         }
 
-        public async Task<TelegraphResult<Account>> GetAccountInfoAsync(Account account, CancellationToken? cancellationToken = null)
+        public async Task<TelegraphResponse<Account>> GetAccountInfoAsync(Account account, CancellationToken? cancellationToken = null)
         {
             using var httpClient = _telegraphClient.GetHttpClient();
 
@@ -54,11 +59,11 @@ namespace TelegraphConnector.Api
 
             var apiResult = await response.Content.ReadAsStringAsync(cancellationToken: cancellationToken.GetValueOrDefault());
 
-            return JsonConvert.DeserializeObject<TelegraphResult<Account>>(apiResult);
+            return JsonConvert.DeserializeObject<TelegraphResponse<Account>>(apiResult);
 
         }
 
-        public async Task<TelegraphResult<Account>> RevokeAccessAsync(Account account, CancellationToken? cancellationToken = null)
+        public async Task<TelegraphResponse<Account>> RevokeAccessAsync(Account account, CancellationToken? cancellationToken = null)
         {
             using var httpClient = _telegraphClient.GetHttpClient();
 
@@ -68,7 +73,7 @@ namespace TelegraphConnector.Api
 
             var apiResult = await response.Content.ReadAsStringAsync(cancellationToken: cancellationToken.GetValueOrDefault());
 
-            return JsonConvert.DeserializeObject<TelegraphResult<Account>>(apiResult);
+            return JsonConvert.DeserializeObject<TelegraphResponse<Account>>(apiResult);
 
         }
     }
