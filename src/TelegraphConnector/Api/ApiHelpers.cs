@@ -5,17 +5,29 @@ using TelegraphConnector.Types;
 
 namespace TelegraphConnector.Api
 {
+
+    public interface ITelegraphClient
+    {
+        HttpClient GetHttpClient();
+    }
+
+
+    public class TelegraphClient : ITelegraphClient
+    {
+        public HttpClient GetHttpClient()
+        {
+            return new HttpClient()
+            {
+                BaseAddress = new Uri(ApiHelpers.API_TELEGRAPH)
+            };
+        }
+    }
+
     internal static class ApiHelpers
     {
         internal const string API_TELEGRAPH = "https://api.telegra.ph";
 
-        internal static HttpClient GetHttpClient()
-        {
-            return new HttpClient()
-            {
-                BaseAddress = new Uri(API_TELEGRAPH)
-            };
-        }
+        
 
         internal static string ToQueryString<TType>(this TType obj) where TType : AbstractTypes
         {
@@ -49,14 +61,16 @@ namespace TelegraphConnector.Api
     }
 
 
-    internal class ApiResult<TType> where TType : AbstractTypes
+    public class TelegraphResult<TType> where TType : AbstractTypes
     {
         public bool Ok { get; set; }
+        public string Error { get; set; }
         public TType Result { get; set; }
     }
-    internal class ApiResult
+    public class TelegraphResult
     {
         public bool Ok { get; set; }
+        public string Error { get; set; }
         public object Result { get; set; }
     }
 

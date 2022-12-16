@@ -9,45 +9,67 @@ using TelegraphConnector.Types;
 
 namespace TelegraphConnector.Api
 {
-    public static class AccountCommands
+    public class AccountCommands
     {
-        public static async Task<Account> CreateAccountAsync(Account account, CancellationToken? cancellationToken = null)
+        private readonly ITelegraphClient _telegraphClient;
+
+        public AccountCommands(ITelegraphClient? telegraphClient = null)
         {
-            using var httpClient = ApiHelpers.GetHttpClient();
+            _telegraphClient = telegraphClient ?? new TelegraphClient();
+        }
+        public async Task<TelegraphResult<Account>> CreateAccountAsync(Account account, CancellationToken? cancellationToken = null)
+        {
+            using var httpClient = _telegraphClient.GetHttpClient();
 
             var response = await httpClient.PostAsync(string.Concat("createAccount?", account.ToQueryString()), null, cancellationToken.GetValueOrDefault());
 
             response.EnsureSuccessStatusCode();
 
-            var apiResult = await response.Content.ReadFromJsonAsync<ApiResult<Account>>(cancellationToken: cancellationToken.GetValueOrDefault());
+            var apiResult = await response.Content.ReadAsStringAsync(cancellationToken: cancellationToken.GetValueOrDefault());
 
-            return apiResult?.Result;
+            return JsonConvert.DeserializeObject<TelegraphResult<Account>>(apiResult);
+
         }
 
-        public static async Task<Account> EditAccountInfoAsync(Account account, CancellationToken? cancellationToken = null)
+        public async Task<TelegraphResult<Account>> EditAccountInfoAsync(Account account, CancellationToken? cancellationToken = null)
         {
-            using var httpClient = ApiHelpers.GetHttpClient();
+            using var httpClient = _telegraphClient.GetHttpClient();
 
             var response = await httpClient.PostAsync(string.Concat("editAccountInfo?", account.ToQueryString()), null, cancellationToken.GetValueOrDefault());
 
             response.EnsureSuccessStatusCode();
 
-            var apiResult = await response.Content.ReadFromJsonAsync<ApiResult<Account>>(cancellationToken: cancellationToken.GetValueOrDefault());
+            var apiResult = await response.Content.ReadAsStringAsync(cancellationToken: cancellationToken.GetValueOrDefault());
 
-            return apiResult?.Result;
+            return JsonConvert.DeserializeObject<TelegraphResult<Account>>(apiResult);
         }
 
-        public static async Task<Account> GetAccountInfoAsync(Account account, CancellationToken? cancellationToken = null)
+        public async Task<TelegraphResult<Account>> GetAccountInfoAsync(Account account, CancellationToken? cancellationToken = null)
         {
-            using var httpClient = ApiHelpers.GetHttpClient();
+            using var httpClient = _telegraphClient.GetHttpClient();
 
             var response = await httpClient.PostAsync($"getAccountInfo?accessToken={account.AccessToken}&fields={JsonConvert.SerializeObject(account.ToFieldNames())}", null, cancellationToken.GetValueOrDefault());
 
             response.EnsureSuccessStatusCode();
 
-            var apiResult = await response.Content.ReadFromJsonAsync<ApiResult<Account>>(cancellationToken: cancellationToken.GetValueOrDefault());
+            var apiResult = await response.Content.ReadAsStringAsync(cancellationToken: cancellationToken.GetValueOrDefault());
 
-            return apiResult?.Result;
+            return JsonConvert.DeserializeObject<TelegraphResult<Account>>(apiResult);
+
+        }
+
+        public async Task<TelegraphResult<Account>> RevokeAccessAsync(Account account, CancellationToken? cancellationToken = null)
+        {
+            using var httpClient = _telegraphClient.GetHttpClient();
+
+            var response = await httpClient.PostAsync($"revokeAccessToken?accessToken={account.AccessToken}", null, cancellationToken.GetValueOrDefault());
+
+            response.EnsureSuccessStatusCode();
+
+            var apiResult = await response.Content.ReadAsStringAsync(cancellationToken: cancellationToken.GetValueOrDefault());
+
+            return JsonConvert.DeserializeObject<TelegraphResult<Account>>(apiResult);
+
         }
     }
 }
