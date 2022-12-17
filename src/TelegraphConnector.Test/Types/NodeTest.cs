@@ -268,6 +268,40 @@ namespace TelegraphConnector.Test.Types
 
 
         [Fact]
+        public void CreateUnorderedList_result_nodes()
+        {
+            var listItem = Node.CreateListItem("test");
+
+            var sut = Node.CreateUnorderedList(listItem);
+
+
+            sut.Tag.Should().Be("ul");
+            sut.Attributes.Should().BeEmpty();
+            sut.Children.Should().HaveCount(1);
+            sut.Children.ElementAt(0).Tag.Should().Be("li");
+            sut.Children.ElementAt(0).Children.Should().HaveCount(1);
+            sut.Children.ElementAt(0).Children.ElementAt(0).Tag.Should().Be("_text");
+            sut.Children.ElementAt(0).Children.ElementAt(0).Value.Should().Be("test");
+        }
+
+        [Fact]
+        public void AddChildren_result_nodes()
+        {
+            var breakLineNode = Node.CreateBreakLine();
+
+            var sut = Node.CreateParagraph(Node.CreateTextNode("test"));
+            sut.AddChildren(breakLineNode);
+
+
+            sut.Tag.Should().Be("p");
+            sut.Children.Should().HaveCount(2);
+            sut.Children.ElementAt(0).Tag.Should().Be("_text");
+            sut.Children.ElementAt(0).Value.Should().Be("test");
+            sut.Children.ElementAt(1).Tag.Should().Be("br");
+        }
+
+
+        [Fact]
         public void CreateOrderedList_result_exception()
         {
             var textNode = Node.CreateTextNode("test");
@@ -285,22 +319,5 @@ namespace TelegraphConnector.Test.Types
             Assert.Throws<ConnectorException>(() => Node.CreateUnorderedList(textNode));
         }
 
-
-        [Fact]
-        public void CreateUnorderedList_result_nodes()
-        {
-            var listItem = Node.CreateListItem("test");
-
-            var sut = Node.CreateUnorderedList(listItem);
-
-
-            sut.Tag.Should().Be("ul");
-            sut.Attributes.Should().BeEmpty();
-            sut.Children.Should().HaveCount(1);
-            sut.Children.ElementAt(0).Tag.Should().Be("li");
-            sut.Children.ElementAt(0).Children.Should().HaveCount(1);
-            sut.Children.ElementAt(0).Children.ElementAt(0).Tag.Should().Be("_text");
-            sut.Children.ElementAt(0).Children.ElementAt(0).Value.Should().Be("test");
-        }
     }
 }
