@@ -3,7 +3,7 @@ using TelegraphConnector.Types;
 
 namespace TelegraphConnector.Parses
 {
-    public class TelegraphMarkDown
+    public class TelegraphMarkdown
     {
         public static IEnumerable<Node> Parse(string markdown)
         {

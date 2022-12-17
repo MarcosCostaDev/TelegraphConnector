@@ -30,13 +30,15 @@ namespace TelegraphConnector.Api
 
         
 
-        internal static string ToQueryString<TType>(this TType obj) where TType : AbstractTypes
+        internal static string ToQueryString<TType>(this TType obj, params string[] ignoreProperties) where TType : AbstractTypes
         {
             var serialized = JsonConvert.SerializeObject(obj);
 
             var dictionary = JsonConvert.DeserializeObject<IDictionary<string, object>>(serialized);
 
-            var step3 = dictionary.Where(p => !string.IsNullOrEmpty(p.Value?.ToString())).Select(x => HttpUtility.UrlEncode(x.Key) + "=" + HttpUtility.UrlEncode(x.Value?.ToString()));
+            var step3 = dictionary.Where(p => !ignoreProperties.Contains(p.Key))
+                                  .Where(p => !string.IsNullOrEmpty(p.Value?.ToString()))
+                                  .Select(x => HttpUtility.UrlEncode(x.Key) + "=" + HttpUtility.UrlEncode(x.Value?.ToString()));
 
             return string.Join("&", step3);
         }

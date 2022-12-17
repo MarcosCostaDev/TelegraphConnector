@@ -13,7 +13,7 @@ namespace TelegraphConnector.Test.Api
         public static IEnumerable<object[]> CreatePageAsync_MemberData()
         {
             var account = Account.Edit("token", "sandbox", "anounymous", "url");
-            var content = new Node();
+            var content = new Node[] { new Node() };
             var page = Page.Create(account, "title", content, false);
 
             yield return new object[] { account.AccessToken, page };
@@ -40,17 +40,16 @@ namespace TelegraphConnector.Test.Api
             sut.Result.AuthorName.Should().Be("Anonymous");
             sut.Result.Views.Should().Be(0);
             sut.Result.CanEdit.Should().BeTrue();
-            sut.Result.Content.Tag.Should().BeNull();
-            sut.Result.Content.Children[0].Tag.Should().Be("p");
-            sut.Result.Content.Children[0].Children[0].Tag.Should().Be("_text");
-            sut.Result.Content.Children[0].Children[0].Value.Should().Be("Hello, world!");
+            sut.Result.Content[0].Tag.Should().Be("p");
+            sut.Result.Content[0].Children[0].Tag.Should().Be("_text");
+            sut.Result.Content[0].Children[0].Value.Should().Be("Hello, world!");
 
         }
 
         public static IEnumerable<object[]> EditPageAsync_MemberData()
         {
             var account = Account.Edit("token", "sandbox", "anounymous", "url");
-            var content = new Node();
+            var content = new Node[] { new Node() };
             var page = Page.Create(account, "title", content, false);
 
             yield return new object[] { account.AccessToken, page };
@@ -77,10 +76,9 @@ namespace TelegraphConnector.Test.Api
             sut.Result.AuthorName.Should().Be("Anonymous");
             sut.Result.Views.Should().Be(2997);
             sut.Result.CanEdit.Should().BeTrue();
-            sut.Result.Content.Tag.Should().BeNull();
-            sut.Result.Content.Children[0].Tag.Should().Be("p");
-            sut.Result.Content.Children[0].Children[0].Tag.Should().Be("_text");
-            sut.Result.Content.Children[0].Children[0].Value.Should().Be("Hello, world!");
+            sut.Result.Content[0].Tag.Should().Be("p");
+            sut.Result.Content[0].Children[0].Tag.Should().Be("_text");
+            sut.Result.Content[0].Children[0].Value.Should().Be("Hello, world!");
 
         }
 
@@ -110,17 +108,16 @@ namespace TelegraphConnector.Test.Api
             sut.Result.AuthorName.Should().Be("Anonymous");
             sut.Result.Views.Should().Be(2997);
             sut.Result.CanEdit.Should().BeFalse();
-            sut.Result.Content.Tag.Should().BeNull();
-            sut.Result.Content.Children[0].Tag.Should().Be("p");
-            sut.Result.Content.Children[0].Children[0].Tag.Should().Be("_text");
-            sut.Result.Content.Children[0].Children[0].Value.Should().Be("Hello, world!");
+            sut.Result.Content[0].Tag.Should().Be("p");
+            sut.Result.Content[0].Children[0].Tag.Should().Be("_text");
+            sut.Result.Content[0].Children[0].Value.Should().Be("Hello, world!");
 
         }
 
         public static IEnumerable<object[]> GetPageListAsync_MemberData()
         {
             var account = Account.Edit("token", "sandbox", "anounymous", "url");
-            var content = new Node();
+            var content = new Node[] { new Node() };
             var page = Page.Create(account, "title", content, false);
 
             yield return new object[] { account.AccessToken, page };

@@ -1,97 +1,88 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http.Json;
 using System.Text;
-using System.Threading.Tasks;
 using TelegraphConnector.Types;
 
 namespace TelegraphConnector.Api
 {
-    public class PageCommands
+    public class PageCommands : AbstractCommands
     {
-        private readonly ITelegraphClient _telegraphClient;
+        public PageCommands(ITelegraphClient? telegraphClient = null, CancellationToken? cancellationToken = null) : base(telegraphClient, cancellationToken) { }
 
-        public PageCommands(ITelegraphClient? telegraphClient = null)
-        {
-            _telegraphClient = telegraphClient ?? new TelegraphClient();
 
-            JsonConvert.DefaultSettings = () => new JsonSerializerSettings
-            {
-                ContractResolver = new NonPublicPropertiesResolver()
-            };
-        }
-        public async Task<TelegraphResponse<Page>> CreatePageAsync(string accessToken, Page page, CancellationToken? cancellationToken = null)
+        public async Task<TelegraphResponse<Page>> CreatePageAsync(string accessToken, Page page)
         {
             using var httpClient = _telegraphClient.GetHttpClient();
 
-            var response = await httpClient.PostAsync($"createPage?access_token={accessToken}&{page.ToQueryString()}", null, cancellationToken.GetValueOrDefault());
+            var content = GetJsonContent(page.Content);
+
+            var response = await httpClient.PostAsync($"createPage?access_token={accessToken}", content, _cancellationToken);
 
             response.EnsureSuccessStatusCode();
 
-            var apiResult = await response.Content.ReadAsStringAsync(cancellationToken: cancellationToken.GetValueOrDefault());
+            var apiResult = await response.Content.ReadAsStringAsync(cancellationToken: _cancellationToken);
 
             return JsonConvert.DeserializeObject<TelegraphResponse<Page>>(apiResult);
         }
 
-        public async Task<TelegraphResponse<Page>> EditPageAsync(string accessToken, Page page, CancellationToken? cancellationToken = null)
+        public async Task<TelegraphResponse<Page>> EditPageAsync(string accessToken, Page page)
         {
             using var httpClient = _telegraphClient.GetHttpClient();
 
-            var response = await httpClient.PostAsync($"editPage?access_token={accessToken}&{page.ToQueryString()}", null, cancellationToken.GetValueOrDefault());
+            var content = GetJsonContent(page.Content);
+
+            var response = await httpClient.PostAsync($"editPage?access_token={accessToken}&{page}", content, _cancellationToken);
 
             response.EnsureSuccessStatusCode();
 
 
-            var apiResult = await response.Content.ReadAsStringAsync(cancellationToken: cancellationToken.GetValueOrDefault());
+            var apiResult = await response.Content.ReadAsStringAsync(cancellationToken: _cancellationToken);
 
             return JsonConvert.DeserializeObject<TelegraphResponse<Page>>(apiResult);
         }
 
-        public async Task<TelegraphResponse<Page>> GetPageAsync(string path, CancellationToken? cancellationToken = null)
+        public async Task<TelegraphResponse<Page>> GetPageAsync(string path)
         {
             using var httpClient = _telegraphClient.GetHttpClient();
 
-            var response = await httpClient.GetAsync($"getPage/{path}?return_content=true", cancellationToken.GetValueOrDefault());
+            var response = await httpClient.GetAsync($"getPage/{path}?return_content=true", _cancellationToken);
 
             response.EnsureSuccessStatusCode();
 
 
-            var apiResult = await response.Content.ReadAsStringAsync(cancellationToken: cancellationToken.GetValueOrDefault());
+            var apiResult = await response.Content.ReadAsStringAsync(cancellationToken: _cancellationToken);
 
             return JsonConvert.DeserializeObject<TelegraphResponse<Page>>(apiResult);
         }
 
-        public async Task<TelegraphResponse<PageTotal>> GetPageListAsync(string accessToken, int offset = 0, int limit = 50, CancellationToken? cancellationToken = null)
+        public async Task<TelegraphResponse<PageTotal>> GetPageListAsync(string accessToken, int offset = 0, int limit = 50)
         {
             using var httpClient = _telegraphClient.GetHttpClient();
 
-            var response = await httpClient.PostAsync($"getPageList?access_token={accessToken}&offset={offset}&limit={limit}", null, cancellationToken.GetValueOrDefault());
+            var response = await httpClient.PostAsync($"getPageList?access_token={accessToken}&offset={offset}&limit={limit}", null, _cancellationToken);
 
             response.EnsureSuccessStatusCode();
 
 
-            var apiResult = await response.Content.ReadAsStringAsync(cancellationToken: cancellationToken.GetValueOrDefault());
+            var apiResult = await response.Content.ReadAsStringAsync(cancellationToken: _cancellationToken);
 
             return JsonConvert.DeserializeObject<TelegraphResponse<PageTotal>>(apiResult);
         }
 
-        public async Task<TelegraphResponse<PageViews>> GetViewsAsync(string accessToken, string path, DateTime date, CancellationToken? cancellationToken = null)
+        public async Task<TelegraphResponse<PageViews>> GetViewsAsync(string accessToken, string path, DateTime date)
         {
             using var httpClient = _telegraphClient.GetHttpClient();
 
-            var response = await httpClient.PostAsync($"editPage?access_token={accessToken}&path={path}&year={date.Year}&month={date.Month}&day={date.Day}&hour={date.Hour}", null, cancellationToken.GetValueOrDefault());
+            var response = await httpClient.PostAsync($"editPage?access_token={accessToken}&path={path}&year={date.Year}&month={date.Month}&day={date.Day}&hour={date.Hour}", null, _cancellationToken);
 
             response.EnsureSuccessStatusCode();
 
-            var apiResult = await response.Content.ReadAsStringAsync(cancellationToken: cancellationToken.GetValueOrDefault());
+            var apiResult = await response.Content.ReadAsStringAsync(cancellationToken: _cancellationToken);
 
             return JsonConvert.DeserializeObject<TelegraphResponse<PageViews>>(apiResult);
         }
 
 
-        public async Task<TelegraphResponse<PageViews>> GetViewsAsync(string accessToken, string path, int? year = null, int? month = null, int? day = null, int? hour = null, CancellationToken? cancellationToken = null)
+        public async Task<TelegraphResponse<PageViews>> GetViewsAsync(string accessToken, string path, int? year = null, int? month = null, int? day = null, int? hour = null)
         {
             using var httpClient = _telegraphClient.GetHttpClient();
 
@@ -103,11 +94,11 @@ namespace TelegraphConnector.Api
             if (hour != null) sb.Append($"&hour={day}");
 
 
-            var response = await httpClient.PostAsync(sb.ToString(), null, cancellationToken.GetValueOrDefault());
+            var response = await httpClient.PostAsync(sb.ToString(), null, _cancellationToken);
 
             response.EnsureSuccessStatusCode();
-
-            var apiResult = await response.Content.ReadAsStringAsync(cancellationToken: cancellationToken.GetValueOrDefault());
+                
+            var apiResult = await response.Content.ReadAsStringAsync(cancellationToken: _cancellationToken);
 
             return JsonConvert.DeserializeObject<TelegraphResponse<PageViews>>(apiResult);
         }

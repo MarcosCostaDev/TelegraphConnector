@@ -11,16 +11,40 @@ namespace TelegraphConnector.Parses.Test
     {
 
         [Fact]
-        public void HtmlParse_example_1_with_body_tag()
+        public void MdParse_example_1_with_body_tag()
         {
             var mdContent = GetTextFromFile("example_1.md");
 
-            var sut = TelegraphMarkDown.Parse(mdContent);
+            var sut = TelegraphMarkdown.Parse(mdContent);
 
             sut.Should().HaveCount(1);
 
             sut.ElementAt(0).Tag.Should().Be("p");
             sut.ElementAt(0).Children.Should().HaveCount(5);
+        }
+
+        [Fact]
+        public void MdParse_example_2_with_body_tag()
+        {
+            var mdContent = GetTextFromFile("example_2.md");
+
+            var sut = TelegraphMarkdown.Parse(mdContent);
+
+            sut.Should().HaveCount(8);
+
+            sut.ElementAt(0).Tag.Should().Be("h1");
+        }
+
+        [Fact]
+        public void MdParse_example_3_with_body_tag()
+        {
+            var mdContent = GetTextFromFile("example_3.md");
+
+            var sut = TelegraphMarkdown.Parse(mdContent);
+
+            sut.Should().HaveCount(12);
+
+            sut.ElementAt(0).Tag.Should().Be("h1");
         }
     }
 }
