@@ -48,7 +48,7 @@ namespace TelegraphConnector.Helpers
             else if(token.Type == JTokenType.Array)
             {
                 var nodes = token.ToObject<List<Node>>();
-                node.AddChildren(nodes);
+                node.AddChildren(nodes.ToArray());
                 return node;
             }
             else 
