@@ -10,15 +10,36 @@
 
   <ItemGroup>
     <None Remove="ParseFiles\example_1.html" />
+    <None Remove="ParseFiles\example_1.md" />
+    <None Remove="ParseFiles\example_2.html" />
+    <None Remove="ParseFiles\example_2.md" />
+    <None Remove="ParseFiles\example_3.html" />
+    <None Remove="ParseFiles\example_3.md" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="ParseFiles\example_1.md">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ParseFiles\example_3.md">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ParseFiles\example_2.md">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ParseFiles\example_3.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ParseFiles\example_2.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="ParseFiles\example_1.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="FluentAssertions" Version="6.8.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.3.2" />
     <PackageReference Include="xunit" Version="2.4.2" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.5">

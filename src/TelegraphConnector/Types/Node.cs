@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using TelegraphConnector.Exceptions;
 using TelegraphConnector.Helpers;
@@ -31,6 +32,10 @@ namespace TelegraphConnector.Types
             }
         }
 
+        public override string ToString()
+        { 
+            return $"<{Tag}/> {Value}";
+        }
         internal Node()
         {
             Children = Enumerable.Empty<Node>().ToList();
@@ -51,6 +56,12 @@ namespace TelegraphConnector.Types
         {
             if (node == null) return;
             Children.AddRange(node);
+        }
+
+        public void InsertChildren(int position, params Node[] node)
+        {
+            if (node == null) return;
+            Children.InsertRange(position, node);
         }
 
         public void AddAttributes(params KeyValuePair<string, string>[] attributes)
@@ -75,6 +86,21 @@ namespace TelegraphConnector.Types
             };
             node.AddAttributes(attributes);
             node.AddChildren(nodes);
+            return node;
+        }
+
+        public static Node CreateAnchor(string text, string link)
+        {
+            if(string.IsNullOrEmpty(link)) throw new ArgumentNullException("link");
+            if (string.IsNullOrEmpty(text)) throw new ArgumentNullException("text");
+
+
+            var attrs = new KeyValuePair<string, string>[]
+            {
+                new KeyValuePair<string, string>("href", link),
+                new KeyValuePair<string, string>("target", "_blank")
+            };
+            var node = Node.CreateNode("a", attrs, Node.CreateTextNode(text));
             return node;
         }
 
@@ -108,10 +134,6 @@ namespace TelegraphConnector.Types
         public static Node CreateItalic(string text)
         {
             return Node.CreateNode("i", null, Node.CreateTextNode(text));
-        }
-        public static Node CreateDiv(params Node[] nodes)
-        {
-            return Node.CreateNode("div", null, nodes);
         }
 
         public static Node CreateParagraph(params Node[] nodes)

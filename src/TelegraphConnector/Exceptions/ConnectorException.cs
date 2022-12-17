@@ -8,11 +8,8 @@ namespace TelegraphConnector.Exceptions
 {
     public class ConnectorException : Exception
     {
-        public ConnectorException(string message)
-        {
-            ConnectorMessage = message;
-        }
+        public ConnectorException(string message) : base(message) { }
+        public ConnectorException(string message, Exception innerException) : base(message, innerException) { }
 
-        public string ConnectorMessage { get; }
     }
 }

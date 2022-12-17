@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace TelegraphConnector.Parses.Test
 {
-    public class AbstractTest
+    public class AbstractTest 
     {
         protected string GetTextFromFile(string relativePath)
         {

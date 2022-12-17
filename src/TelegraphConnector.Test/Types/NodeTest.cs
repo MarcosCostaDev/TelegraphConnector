@@ -60,6 +60,40 @@ namespace TelegraphConnector.Test.Types
             sut.Attributes["data"].Should().Be("three-style");
         }
 
+        [Theory]
+        [InlineData(null, "http://test.com/website?webtest")]
+        [InlineData("", "http://test.com/website?webtest")]
+        public void CreateAnchor_text_not_informed_exception(string text, string link)
+        {
+
+            Assert.Throws<ArgumentNullException>(() => Node.CreateAnchor(text, link));
+        }
+
+        [Theory]
+        [InlineData("a text", "")]
+        [InlineData("text", null)]
+        public void CreateAnchor_link_not_informed_exception(string text, string link)
+        {
+
+            Assert.Throws<ArgumentNullException>(() => Node.CreateAnchor(text, link));
+        }
+
+        [Theory]
+        [InlineData("a text", "http://www.example.com/path/to/resource")]
+        [InlineData("text", "example.com/path/to/resource")]
+        public void CreateAnchor_link_well_formatted_exception(string text, string link)
+        {
+
+            var sut = Node.CreateAnchor(text, link);
+
+            sut.Tag.Should().Be("a");
+            sut.Attributes.Should().HaveCount(2);
+            sut.Attributes["href"].Should().Be(link);
+            sut.Attributes["target"].Should().Be("_blank");
+            sut.Children.Should().HaveCount(1);
+            sut.Children[0].Value.Should().Be(text);
+        }
+
         [Fact]
         public void CreateParagraph_result_nodes()
         {
@@ -105,20 +139,6 @@ namespace TelegraphConnector.Test.Types
             sut.Children.ElementAt(0).Value.Should().Be("test");
         }
 
-        [Fact]
-        public void CreateDiv_result_nodes()
-        {
-            var textNode = Node.CreateTextNode("test");
-
-            var sut = Node.CreateDiv(textNode);
-
-
-            sut.Tag.Should().Be("div");
-            sut.Attributes.Should().BeEmpty();
-            sut.Children.Should().HaveCount(1);
-            sut.Children.ElementAt(0).Tag.Should().Be("_text");
-            sut.Children.ElementAt(0).Value.Should().Be("test");
-        }
 
 
         [Fact]
