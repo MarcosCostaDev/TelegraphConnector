@@ -2,11 +2,11 @@
 using System.Text;
 using TelegraphConnector.Types;
 
-namespace TelegraphConnector.Api
+namespace TelegraphConnector.Services
 {
-    public class PageCommands : AbstractCommands
+    public class PageService : AbstractService
     {
-        public PageCommands(ITelegraphClient? telegraphClient = null, CancellationToken? cancellationToken = null) : base(telegraphClient, cancellationToken) { }
+        public PageService(ITelegraphClient? telegraphClient = null, CancellationToken? cancellationToken = null) : base(telegraphClient, cancellationToken) { }
 
 
         public async Task<TelegraphResponse<Page>> CreatePageAsync(string accessToken, Page page)

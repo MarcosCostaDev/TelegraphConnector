@@ -4,7 +4,7 @@ using System.Reflection;
 using System.Web;
 using TelegraphConnector.Types;
 
-namespace TelegraphConnector.Api
+namespace TelegraphConnector.Services
 {
 
     public interface ITelegraphClient

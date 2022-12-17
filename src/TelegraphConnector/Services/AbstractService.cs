@@ -5,13 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TelegraphConnector.Api
+namespace TelegraphConnector.Services
 {
-    public abstract class AbstractCommands 
+    public abstract class AbstractService 
     {
         protected readonly ITelegraphClient _telegraphClient;
         protected readonly CancellationToken _cancellationToken;
-        public AbstractCommands(ITelegraphClient? telegraphClient = null, CancellationToken? cancellationToken = null)
+        public AbstractService(ITelegraphClient? telegraphClient = null, CancellationToken? cancellationToken = null)
         {
             _telegraphClient = telegraphClient ?? new TelegraphClient();
             _cancellationToken = cancellationToken ?? CancellationToken.None;

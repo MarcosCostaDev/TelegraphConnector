@@ -1,24 +1,20 @@
-﻿using Moq.Protected;
-using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Moq;
+using Moq.Protected;
 using System.Net;
 using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
-using TelegraphConnector.Api;
+using TelegraphConnector.Services;
 
-namespace TelegraphConnector.Test.Api
+namespace TelegraphConnector.Test.Services
 {
-    public abstract class AbstractCommandTest
+    public abstract class AbstractServiceTest
     {
         protected string GetTextFromFile(string relativePath)
         {
             var codeBaseUrl = new Uri(Assembly.GetExecutingAssembly().Location);
             var codeBasePath = Uri.UnescapeDataString(codeBaseUrl.AbsolutePath);
             var dirPath = Path.GetDirectoryName(codeBasePath);
-            return File.ReadAllText(Path.Combine(dirPath, "Api", "MockResponses", relativePath));
+            return File.ReadAllText(Path.Combine(dirPath, "Services", "MockResponses", relativePath));
         }
 
         protected Mock<ITelegraphClient> CreateMockClient(string responseFile)

@@ -1,14 +1,11 @@
 ﻿using FluentAssertions;
 using Moq;
-using Moq.Protected;
-using System.Net;
-using System.Text;
-using TelegraphConnector.Api;
+using TelegraphConnector.Services;
 using TelegraphConnector.Types;
 
-namespace TelegraphConnector.Test.Api
+namespace TelegraphConnector.Test.Services
 {
-    public class PageCommandsTest : AbstractCommandTest
+    public class PageServiceTest : AbstractServiceTest
     {
         public static IEnumerable<object[]> CreatePageAsync_MemberData()
         {
@@ -27,7 +24,7 @@ namespace TelegraphConnector.Test.Api
             
             Mock<ITelegraphClient> moqClient = CreateMockClient("page_create.json");
 
-            var pageCommands = new PageCommands(moqClient.Object);
+            var pageCommands = new PageService(moqClient.Object);
 
             var sut = await pageCommands.CreatePageAsync(accessToken, page);
 
@@ -63,7 +60,7 @@ namespace TelegraphConnector.Test.Api
             
             Mock<ITelegraphClient> moqClient = CreateMockClient("page_edit.json");
 
-            var pageCommands = new PageCommands(moqClient.Object);
+            var pageCommands = new PageService(moqClient.Object);
 
             var sut = await pageCommands.EditPageAsync(accessToken, page);
 
@@ -95,7 +92,7 @@ namespace TelegraphConnector.Test.Api
 
             Mock<ITelegraphClient> moqClient = CreateMockClient("page_get.json");
 
-            var pageCommands = new PageCommands(moqClient.Object);
+            var pageCommands = new PageService(moqClient.Object);
 
             var sut = await pageCommands.GetPageAsync(path);
 
@@ -131,7 +128,7 @@ namespace TelegraphConnector.Test.Api
             // ARRANGE
             Mock<ITelegraphClient> moqClient = CreateMockClient("page_get_list.json");
 
-            var pageCommands = new PageCommands(moqClient.Object);
+            var pageCommands = new PageService(moqClient.Object);
 
             var sut = await pageCommands.GetPageListAsync(accessToken, offset, limit);
 
@@ -173,7 +170,7 @@ namespace TelegraphConnector.Test.Api
 
             Mock<ITelegraphClient> moqClient = CreateMockClient("page_get_views.json");
 
-            var pageCommands = new PageCommands(moqClient.Object);
+            var pageCommands = new PageService(moqClient.Object);
 
             var sut = await pageCommands.GetViewsAsync(accessToken, path, year, month, day, hour);
 
@@ -196,7 +193,7 @@ namespace TelegraphConnector.Test.Api
         {
             Mock<ITelegraphClient> moqClient = CreateMockClient("page_get_views.json");
 
-            var pageCommands = new PageCommands(moqClient.Object);
+            var pageCommands = new PageService(moqClient.Object);
 
             var sut = await pageCommands.GetViewsAsync(accessToken, path, date);
 

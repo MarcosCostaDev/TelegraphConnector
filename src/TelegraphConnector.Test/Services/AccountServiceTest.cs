@@ -1,14 +1,11 @@
 ﻿using FluentAssertions;
 using Moq;
-using Moq.Protected;
-using System.Net;
-using System.Text;
-using TelegraphConnector.Api;
+using TelegraphConnector.Services;
 using TelegraphConnector.Types;
 
-namespace TelegraphConnector.Test.Api
+namespace TelegraphConnector.Test.Services
 {
-    public class AccountCommandsTest : AbstractCommandTest
+    public class AccountServiceTest : AbstractServiceTest
     {
       
 
@@ -25,7 +22,7 @@ namespace TelegraphConnector.Test.Api
             
             Mock<ITelegraphClient> moqClient = CreateMockClient("account_create.json");
 
-            var accountCommands = new AccountCommands(moqClient.Object);
+            var accountCommands = new AccountService(moqClient.Object);
 
             var sut = await accountCommands.CreateAccountAsync(account);
 
@@ -53,7 +50,7 @@ namespace TelegraphConnector.Test.Api
            
             Mock<ITelegraphClient> moqClient = CreateMockClient("account_edit.json");
 
-            var accountCommands = new AccountCommands(moqClient.Object);
+            var accountCommands = new AccountService(moqClient.Object);
 
             // SUT 
             var sut = await accountCommands.EditAccountInfoAsync(account);
@@ -79,7 +76,7 @@ namespace TelegraphConnector.Test.Api
         {
             Mock<ITelegraphClient> moqClient = CreateMockClient("account_info.json");
 
-            var accountCommands = new AccountCommands(moqClient.Object);
+            var accountCommands = new AccountService(moqClient.Object);
 
             // SUT 
             var sut = await accountCommands.GetAccountInfoAsync(account);
@@ -103,7 +100,7 @@ namespace TelegraphConnector.Test.Api
         {
             Mock<ITelegraphClient> moqClient = CreateMockClient("account_revoke.json");
 
-            var accountCommands = new AccountCommands(moqClient.Object);
+            var accountCommands = new AccountService(moqClient.Object);
 
             // SUT 
             var sut = await accountCommands.RevokeAccessAsync(account);

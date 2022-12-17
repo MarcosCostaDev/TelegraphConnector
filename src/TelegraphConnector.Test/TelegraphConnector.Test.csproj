@@ -9,43 +9,43 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Api\MockResponses\account_create.json" />
-    <None Remove="Api\MockResponses\account_edit.json" />
-    <None Remove="Api\MockResponses\account_info.json" />
-    <None Remove="Api\MockResponses\account_revoke.json" />
-    <None Remove="Api\MockResponses\page_create.json" />
-    <None Remove="Api\MockResponses\page_edit.json" />
-    <None Remove="Api\MockResponses\page_get.json" />
-    <None Remove="Api\MockResponses\page_get_list.json" />
-    <None Remove="Api\MockResponses\page_get_views.json" />
+    <None Remove="Services\MockResponses\account_create.json" />
+    <None Remove="Services\MockResponses\account_edit.json" />
+    <None Remove="Services\MockResponses\account_info.json" />
+    <None Remove="Services\MockResponses\account_revoke.json" />
+    <None Remove="Services\MockResponses\page_create.json" />
+    <None Remove="Services\MockResponses\page_edit.json" />
+    <None Remove="Services\MockResponses\page_get.json" />
+    <None Remove="Services\MockResponses\page_get_list.json" />
+    <None Remove="Services\MockResponses\page_get_views.json" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Api\MockResponses\page_get_views.json">
+    <Content Include="Services\MockResponses\page_get_views.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Api\MockResponses\page_get_list.json">
+    <Content Include="Services\MockResponses\page_get_list.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Api\MockResponses\page_get.json">
+    <Content Include="Services\MockResponses\page_get.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Api\MockResponses\page_edit.json">
+    <Content Include="Services\MockResponses\page_edit.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Api\MockResponses\page_create.json">
+    <Content Include="Services\MockResponses\page_create.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Api\MockResponses\account_revoke.json">
+    <Content Include="Services\MockResponses\account_revoke.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Api\MockResponses\account_info.json">
+    <Content Include="Services\MockResponses\account_info.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Api\MockResponses\account_edit.json">
+    <Content Include="Services\MockResponses\account_edit.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Api\MockResponses\account_create.json">
+    <Content Include="Services\MockResponses\account_create.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

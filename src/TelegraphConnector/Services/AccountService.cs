@@ -1,11 +1,11 @@
 ﻿using Newtonsoft.Json;
 using TelegraphConnector.Types;
 
-namespace TelegraphConnector.Api
+namespace TelegraphConnector.Services
 {
-    public class AccountCommands : AbstractCommands
+    public class AccountService : AbstractService
     {
-        public AccountCommands(ITelegraphClient? telegraphClient = null, CancellationToken? cancellationToken = null) : base(telegraphClient, cancellationToken) { }
+        public AccountService(ITelegraphClient? telegraphClient = null, CancellationToken? cancellationToken = null) : base(telegraphClient, cancellationToken) { }
 
         public async Task<TelegraphResponse<Account>> CreateAccountAsync(Account account)
         {
