@@ -5,7 +5,15 @@ VisualStudioVersion = 17.4.33103.184
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TelegraphConnector", "TelegraphConnector\TelegraphConnector.csproj", "{6BA9596D-424E-4A4D-B6D4-F0030D66C47B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TelegraphConnector.Test", "TelegraphConnector.Test\TelegraphConnector.Test.csproj", "{8CA1F759-27E5-4C06-A75C-1DC33CE970F5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TelegraphConnector.Test", "TelegraphConnector.Test\TelegraphConnector.Test.csproj", "{8CA1F759-27E5-4C06-A75C-1DC33CE970F5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TelegraphConnector.Parses", "TelegraphConnector.Parses\TelegraphConnector.Parses.csproj", "{2262AB05-840C-4691-9A0C-6184A78DB37F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TelegraphConnector.Parses.Test", "TelegraphConnector.Parses.Test\TelegraphConnector.Parses.Test.csproj", "{79A99A31-DB71-43F0-B284-8E255AAFF75A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Parse", "Parse", "{E55AD867-AFE0-46CE-B7CE-03448F815A78}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Connector", "Connector", "{66759673-6D9B-400B-824C-E0FE650E052D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,9 +29,23 @@ Global
 		{8CA1F759-27E5-4C06-A75C-1DC33CE970F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8CA1F759-27E5-4C06-A75C-1DC33CE970F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8CA1F759-27E5-4C06-A75C-1DC33CE970F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2262AB05-840C-4691-9A0C-6184A78DB37F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2262AB05-840C-4691-9A0C-6184A78DB37F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2262AB05-840C-4691-9A0C-6184A78DB37F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2262AB05-840C-4691-9A0C-6184A78DB37F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{79A99A31-DB71-43F0-B284-8E255AAFF75A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79A99A31-DB71-43F0-B284-8E255AAFF75A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79A99A31-DB71-43F0-B284-8E255AAFF75A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79A99A31-DB71-43F0-B284-8E255AAFF75A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{6BA9596D-424E-4A4D-B6D4-F0030D66C47B} = {66759673-6D9B-400B-824C-E0FE650E052D}
+		{8CA1F759-27E5-4C06-A75C-1DC33CE970F5} = {66759673-6D9B-400B-824C-E0FE650E052D}
+		{2262AB05-840C-4691-9A0C-6184A78DB37F} = {E55AD867-AFE0-46CE-B7CE-03448F815A78}
+		{79A99A31-DB71-43F0-B284-8E255AAFF75A} = {E55AD867-AFE0-46CE-B7CE-03448F815A78}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4A36D75F-FAB6-4E35-80D5-85E47084BE8A}

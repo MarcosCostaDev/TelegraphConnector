@@ -49,6 +49,7 @@ namespace TelegraphConnector.Types
 
         public void AddChildren(params Node[] node)
         {
+            if (node == null) return;
             Children.AddRange(node);
         }
 
@@ -107,6 +108,10 @@ namespace TelegraphConnector.Types
         public static Node CreateItalic(string text)
         {
             return Node.CreateNode("i", null, Node.CreateTextNode(text));
+        }
+        public static Node CreateDiv(params Node[] nodes)
+        {
+            return Node.CreateNode("div", null, nodes);
         }
 
         public static Node CreateParagraph(params Node[] nodes)

@@ -105,7 +105,22 @@ namespace TelegraphConnector.Test.Types
             sut.Children.ElementAt(0).Value.Should().Be("test");
         }
 
-        
+        [Fact]
+        public void CreateDiv_result_nodes()
+        {
+            var textNode = Node.CreateTextNode("test");
+
+            var sut = Node.CreateDiv(textNode);
+
+
+            sut.Tag.Should().Be("div");
+            sut.Attributes.Should().BeEmpty();
+            sut.Children.Should().HaveCount(1);
+            sut.Children.ElementAt(0).Tag.Should().Be("_text");
+            sut.Children.ElementAt(0).Value.Should().Be("test");
+        }
+
+
         [Fact]
         public void CreateBreakLine_result_nodes()
         {

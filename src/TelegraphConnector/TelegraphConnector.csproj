@@ -11,11 +11,11 @@
       This package allow developers to connect the Telegra.ph API and use its features for create beautiful pages in the Telegram component
     </Description>
     <PackageProjectUrl>https://github.com/MarcosCostaDev/TelegraphConnector</PackageProjectUrl>
-    <Copyright>Marcos Costa Dev © 2022</Copyright>
+    <Copyright>MarcosCostaDev © 2022</Copyright>
     <RepositoryUrl>https://github.com/MarcosCostaDev/TelegraphConnector.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>Telegram; Telegraph; chat; page</PackageTags>
-    <Company>Marcos Costa Dev</Company>
+    <Company>MarcosCostaDev</Company>
   </PropertyGroup>
 
   <ItemGroup>
@@ -24,6 +24,7 @@
 
   <PropertyGroup>
     <GeneratedAssemblyInfoFile>AssemblyInfo.cs</GeneratedAssemblyInfoFile>
+    <Authors>Marcos Costa</Authors>
   </PropertyGroup>
 
   <ItemGroup>
