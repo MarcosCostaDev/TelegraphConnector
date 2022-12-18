@@ -12,10 +12,13 @@ namespace TelegraphConnector.Types
     {   
         public static implicit operator string(Node node) => node.Tag == "_text" ? node.Attributes["value"] : null;
         public static implicit operator Node(string value) => string.IsNullOrEmpty(value) ? null : new(value);
+
+        [JsonProperty("tag")]
         public string Tag { get; private set; }
 
         [JsonProperty("attrs")]
         public IDictionary<string, string> Attributes { get; private set; }
+        [JsonProperty("children")]
         public List<Node> Children { get; private set; }
 
         [JsonIgnore]
@@ -104,14 +107,7 @@ namespace TelegraphConnector.Types
             return node;
         }
 
-        public static Node CreateHeader1(string text)
-        {
-            return Node.CreateNode("h1", null, Node.CreateTextNode(text));
-        }
-        public static Node CreateHeader2(string text)
-        {
-            return Node.CreateNode("h2", null, Node.CreateTextNode(text));
-        }
+        
         public static Node CreateHeader3(string text)
         {
             return Node.CreateNode("h3", null, Node.CreateTextNode(text));
@@ -139,11 +135,6 @@ namespace TelegraphConnector.Types
         public static Node CreateParagraph(params Node[] nodes)
         {
             return Node.CreateNode("p", null, nodes);
-        }
-
-        public static Node CreateSpan(params Node[] nodes)
-        {
-            return Node.CreateNode("span", null, nodes);
         }
 
         public static Node CreateUnorderedList(params Node[] nodes)
@@ -183,7 +174,6 @@ namespace TelegraphConnector.Types
         {
             return Node.CreateNode("hr", null);
         }
-
 
     }
 }

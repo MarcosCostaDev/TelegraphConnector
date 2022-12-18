@@ -9,5 +9,6 @@ namespace TelegraphConnector.Types
     public class PageViews : AbstractTypes
     {
         public int Views { get; private set; }
+
     }
 }

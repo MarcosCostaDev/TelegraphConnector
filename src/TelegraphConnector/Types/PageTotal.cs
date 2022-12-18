@@ -14,5 +14,6 @@ namespace TelegraphConnector.Types
         [JsonProperty("total_count")]
         public int TotalCount { get; private set; }
         public IEnumerable<Page> Pages { get; private set; }
+
     }
 }

@@ -44,7 +44,6 @@ namespace TelegraphConnector.Types
             };
         }
 
-
         [JsonProperty("access_token")]
         public string AccessToken { get; protected set; }
 

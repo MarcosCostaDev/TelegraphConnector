@@ -38,7 +38,7 @@ namespace TelegraphConnector.Services
         {
             using var httpClient = _telegraphClient.GetHttpClient();
 
-            var response = await httpClient.PostAsync($"getAccountInfo?accessToken={account.AccessToken}&fields={JsonConvert.SerializeObject(account.ToFieldNames())}", null, _cancellationToken);
+            var response = await httpClient.PostAsync($"getAccountInfo?access_token={account.AccessToken}&fields={JsonConvert.SerializeObject(account.ToFieldNames())}", null, _cancellationToken);
 
             response.EnsureSuccessStatusCode();
 
@@ -52,7 +52,7 @@ namespace TelegraphConnector.Services
         {
             using var httpClient = _telegraphClient.GetHttpClient();
 
-            var response = await httpClient.PostAsync($"revokeAccessToken?accessToken={account.AccessToken}", null, _cancellationToken);
+            var response = await httpClient.PostAsync($"revokeAccessToken?access_token={account.AccessToken}", null, _cancellationToken);
 
             response.EnsureSuccessStatusCode();
 

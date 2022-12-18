@@ -9,20 +9,24 @@ namespace ExampleTelegraphConsole
     {
         static void Main(string[] args)
         {
-            CreateAccount();
+            try
+            {
+                var account = AccountData.CreateAccountIfNotRegisteredAsync().GetAwaiter().GetResult();
+                var pageSingle = PageData.CreateSinglePageAsync(account).GetAwaiter().GetResult();
+                var pageHtml = PageData.CreatePageFromHtmlAsync(account).GetAwaiter().GetResult();
+
+                Console.WriteLine(JsonConvert.SerializeObject(pageSingle, Formatting.Indented));
+                Console.WriteLine(JsonConvert.SerializeObject(pageHtml, Formatting.Indented));
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+           
+            }
+            Console.ReadKey();
+
         }
-        
-        static void CreateAccount()
-        {
-            var author = Account.Create("test account", "test author", "http://test.com");
 
-            var accountService = new AccountService();
-            
-            var response = accountService.CreateAccountAsync(author);
 
-            var jResult = JsonConvert.SerializeObject(response.Result, Formatting.Indented);
-
-            
-        }
     }
 }

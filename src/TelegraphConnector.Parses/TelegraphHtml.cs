@@ -1,11 +1,4 @@
-﻿using Markdig.Extensions.Footnotes;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+﻿using System.Text.RegularExpressions;
 using TelegraphConnector.Types;
 
 namespace TelegraphConnector.Parses
@@ -16,26 +9,42 @@ namespace TelegraphConnector.Parses
         private static readonly Regex _attributeRegex = new Regex(@"\s(?<key>[^\s=]+)=['""](?<value>.+?)['""]", RegexOptions.Singleline);
         private static readonly Regex _bodyRegex = new Regex("<body>(?<content>.+?)</body>", RegexOptions.Singleline);
         private static readonly Regex _beforeAfterTagRegex = new Regex("(?<before>.+?)<[^>]+>(?<after>.+?)", RegexOptions.Singleline);
-        private static readonly string[] _supportedTags = new string[]
+        private static readonly string[] _allowedTags = new string[]
         {
-            "a", "div", "b", "strong", "br", "hr", "code", "em", "figcaption", "figure", "h1", "h2", "h3", "h4", "h5", "h6",
-            "hr", "img", "ol", "li", "i", "p", "pre", "s", "strong", "u", "ul", "video"
+            "a", "aside", "b", "blockquote", "br", "code", "em", "figcaption",
+            "figure", "h3", "h4", "hr", "i", "iframe", "img", "li", "ol", "p", "pre", "strong", "u", "ul", "video"
         };
-        public static IEnumerable<Node> Parse(string html, Node rootNode = null)
+
+        private static string AdjustTitles(string html)
+        {
+            var result = Regex.Replace(html, "<h[2-6](.*?)>(.*?)</h[2-6]>", "<h4$1>$2</h4>", RegexOptions.Singleline);
+            result = Regex.Replace(result, "<h1(.*?)>(.*?)</h1>", "<h3$1>$2</h3>", RegexOptions.Singleline);
+
+            return result;
+        }
+        private static string SanitizeHtml(string html)
+        {
+            html = AdjustTitles(html);
+            var acceptable = string.Join("|", _allowedTags);
+            var stringPattern = $"<(?!((?:\\/\\s*)?(?:{acceptable})))([^>])+>";
+            return Regex.Replace(html, stringPattern, "", RegexOptions.Multiline);
+        }
+        public static IEnumerable<Node> Parse(string html)
         {
 
             var nodes = new List<Node>();
             Match bodyMatch = _bodyRegex.Match(html);
             string bodyContent = bodyMatch.Groups["content"].Value;
+            string validContent = SanitizeHtml(string.IsNullOrEmpty(bodyContent) ? html : bodyContent);
 
-            Match match = _regex.Match(string.IsNullOrEmpty(bodyContent) ? html : bodyContent);
+            Match match = _regex.Match(validContent);
             while (match.Success)
             {
                 string tag = match.Groups["tag"].Value;
                 string content = match.Groups["content"].Value;
                 string attributes = match.Groups["attributes"].Value;
 
-                if (!_supportedTags.Contains(tag.ToLower()))
+                if (!_allowedTags.Contains(tag.ToLower()))
                 {
                     match = match.NextMatch();
                     continue;
@@ -78,6 +87,11 @@ namespace TelegraphConnector.Parses
                 string innerContent = innerMatch.Groups["content"].Value;
                 string innerAttributes = innerMatch.Groups["attributes"].Value;
 
+                if (!_allowedTags.Contains(innerTag.ToLower()))
+                {
+                    innerMatch = innerMatch.NextMatch();
+                    continue;
+                }
 
                 Dictionary<string, string> innerAttributeDict = new Dictionary<string, string>();
 
@@ -114,13 +128,13 @@ namespace TelegraphConnector.Parses
                         var textNodeAfter = Node.CreateTextNode(after);
 
                         innerRootTag.AddChildren(textNodeAfter);
-                    }   
+                    }
                 }
 
                 nodes.Add(innerRootTag);
                 innerMatch = innerMatch.NextMatch();
             }
-            
+
             if (!innerMatch.Success && !string.IsNullOrEmpty(content))
             {
                 Match matchBeforeAfter = _beforeAfterTagRegex.Match(content);
@@ -148,7 +162,7 @@ namespace TelegraphConnector.Parses
                     var textNode = Node.CreateTextNode(content);
                     nodes.Add(textNode);
                 }
-               
+
             }
 
 

@@ -45,7 +45,7 @@ namespace TelegraphConnector.Services
 
         internal static IEnumerable<string> ToFieldNames<TType>(this TType obj) where TType : AbstractTypes
         {
-            var propertyInfos = obj.GetType().GetProperties(BindingFlags.Public);
+            var propertyInfos = obj.GetType().GetProperties();
 
             foreach (PropertyInfo propertyInfo in propertyInfos)
             {

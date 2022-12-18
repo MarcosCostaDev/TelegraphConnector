@@ -9,6 +9,5 @@ namespace TelegraphConnector.Types
 {
     public abstract class AbstractTypes
     {
-
     }
 }

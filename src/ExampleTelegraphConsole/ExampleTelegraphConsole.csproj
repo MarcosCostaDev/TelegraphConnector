@@ -8,7 +8,37 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="AppData\" />
+    <None Remove="AppData\ExampleFiles\example_1.html" />
+    <None Remove="AppData\ExampleFiles\example_1.md" />
+    <None Remove="AppData\ExampleFiles\example_2.html" />
+    <None Remove="AppData\ExampleFiles\example_2.md" />
+    <None Remove="AppData\ExampleFiles\example_3.html" />
+    <None Remove="AppData\ExampleFiles\example_3.md" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="AppData\ExampleFiles\example_1.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AppData\ExampleFiles\example_1.md">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AppData\ExampleFiles\example_2.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AppData\ExampleFiles\example_2.md">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AppData\ExampleFiles\example_3.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AppData\ExampleFiles\example_3.md">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Faker.Net" Version="2.0.154" />
   </ItemGroup>
 
   <ItemGroup>

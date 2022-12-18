@@ -32,7 +32,7 @@ namespace TelegraphConnector.Parses.Test
 
             sut.Should().HaveCount(8);
 
-            sut.ElementAt(0).Tag.Should().Be("h1");
+            sut.ElementAt(0).Tag.Should().Be("h3");
         }
 
         [Fact]
@@ -44,7 +44,7 @@ namespace TelegraphConnector.Parses.Test
 
             sut.Should().HaveCount(12);
 
-            sut.ElementAt(0).Tag.Should().Be("h1");
+            sut.ElementAt(0).Tag.Should().Be("h3");
         }
     }
 }

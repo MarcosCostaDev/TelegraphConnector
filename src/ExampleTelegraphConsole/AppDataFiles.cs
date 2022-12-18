@@ -9,7 +9,7 @@ namespace ExampleTelegraphConsole
 {
     internal class AppDataFiles
     {
-        internal static string GetAppDataFolderPath()
+        private static string GetAppDataFolderPath()
         {
 
             var codeBaseUrl = new Uri(Assembly.GetExecutingAssembly().Location);
@@ -38,6 +38,8 @@ namespace ExampleTelegraphConsole
         {
             var folderPath = GetAppDataFolderPath();
             var filePath = Path.Combine(folderPath, filename);
+
+            if(!File.Exists(filePath)) return string.Empty;
 
             return File.ReadAllText(filePath);
         }

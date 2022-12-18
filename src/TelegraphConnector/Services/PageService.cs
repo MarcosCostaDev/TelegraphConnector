@@ -13,9 +13,16 @@ namespace TelegraphConnector.Services
         {
             using var httpClient = _telegraphClient.GetHttpClient();
 
-            var content = GetJsonContent(page.Content);
+            var body = new
+            {
+                AccessToken = accessToken,
+                page.Title,
+                page.Content,
+                page.ReturnContent,
+                page.AuthorName,
+            };
 
-            var response = await httpClient.PostAsync($"createPage?access_token={accessToken}", content, _cancellationToken);
+            var response = await httpClient.PostAsync($"createPage", GetJsonContent(body), _cancellationToken);
 
             response.EnsureSuccessStatusCode();
 
@@ -28,9 +35,16 @@ namespace TelegraphConnector.Services
         {
             using var httpClient = _telegraphClient.GetHttpClient();
 
-            var content = GetJsonContent(page.Content);
+            var body = new
+            {
+                AccessToken = accessToken,
+                page.Title,
+                page.Content,
+                page.ReturnContent,
+                page.AuthorName,
+            };
 
-            var response = await httpClient.PostAsync($"editPage?access_token={accessToken}&{page}", content, _cancellationToken);
+            var response = await httpClient.PostAsync($"editPage", GetJsonContent(body), _cancellationToken);
 
             response.EnsureSuccessStatusCode();
 
@@ -58,7 +72,7 @@ namespace TelegraphConnector.Services
         {
             using var httpClient = _telegraphClient.GetHttpClient();
 
-            var response = await httpClient.PostAsync($"getPageList?access_token={accessToken}&offset={offset}&limit={limit}", null, _cancellationToken);
+            var response = await httpClient.GetAsync($"getPageList?access_token={accessToken}&offset={offset}&limit={limit}", _cancellationToken);
 
             response.EnsureSuccessStatusCode();
 

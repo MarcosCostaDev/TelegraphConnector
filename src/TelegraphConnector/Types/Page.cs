@@ -97,6 +97,5 @@ namespace TelegraphConnector.Types
             return this.ToQueryString("Content");
         }
 
-        
     }
 }

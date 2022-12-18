@@ -110,21 +110,6 @@ namespace TelegraphConnector.Test.Types
         }
 
         [Fact]
-        public void CreateSpan_result_nodes()
-        {
-            var textNode = Node.CreateTextNode("test");
-
-            var sut = Node.CreateSpan(textNode);
-
-
-            sut.Tag.Should().Be("span");
-            sut.Attributes.Should().BeEmpty();
-            sut.Children.Should().HaveCount(1);
-            sut.Children.ElementAt(0).Tag.Should().Be("_text");
-            sut.Children.ElementAt(0).Value.Should().Be("test");
-        }
-
-        [Fact]
         public void CreateAside_result_nodes()
         {
             var textNode = Node.CreateTextNode("test");
@@ -190,32 +175,7 @@ namespace TelegraphConnector.Test.Types
             sut.Children.ElementAt(0).Tag.Should().Be("_text");
             sut.Children.ElementAt(0).Value.Should().Be("test");
         }
-
-        [Fact]
-        public void CreateHeader1_with_text_result_nodes()
-        {
-            var sut = Node.CreateHeader1("test");
-
-
-            sut.Tag.Should().Be("h1");
-            sut.Attributes.Should().BeEmpty();
-            sut.Children.Should().HaveCount(1);
-            sut.Children.ElementAt(0).Tag.Should().Be("_text");
-            sut.Children.ElementAt(0).Value.Should().Be("test");
-        }
-
-        [Fact]
-        public void CreateHeader2_with_text_result_nodes()
-        {
-            var sut = Node.CreateHeader2("test");
-
-
-            sut.Tag.Should().Be("h2");
-            sut.Attributes.Should().BeEmpty();
-            sut.Children.Should().HaveCount(1);
-            sut.Children.ElementAt(0).Tag.Should().Be("_text");
-            sut.Children.ElementAt(0).Value.Should().Be("test");
-        }
+              
 
         [Fact]
         public void CreateHeader3_with_text_result_nodes()
