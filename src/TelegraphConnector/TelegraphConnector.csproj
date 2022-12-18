@@ -6,10 +6,11 @@
     <Nullable>enable</Nullable>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Title>Telegraph Connector</Title>
-    <Description>
-      Telegra.ph API for .net
-      This package allow developers to connect the Telegra.ph API and use its features for create beautiful pages in the Telegram component
-    </Description>
+    <Description>Introducing TelegraphConnector - the Nuget package that makes it easy to communicate with the Telegra.ph API. 
+With this package, you can create a web page using resources from Telegra.ph, giving you access to a wide range of features and functionality. 
+Whether you want to publish articles, or share multimedia content, TelegraphConnector makes it simple to do so. 
+Simply install the package, create or authenticate with your Telegra.ph account, and start building your web page for using the instant view in the Telegram.  
+With easy-to-use methods and comprehensive documentation, TelegraphConnector is the perfect choice for anyone looking to utilize the power of Telegra.ph.</Description>
     <PackageProjectUrl>https://github.com/MarcosCostaDev/TelegraphConnector</PackageProjectUrl>
     <Copyright>MarcosCostaDev © 2022</Copyright>
     <RepositoryUrl>https://github.com/MarcosCostaDev/TelegraphConnector.git</RepositoryUrl>

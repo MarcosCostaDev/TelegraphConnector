@@ -1,0 +1,65 @@
+name: Deploy Nuget Package
+
+on:
+  push:
+    branches:
+      - pre-release
+
+env:
+    WORKING_DIR: "$GITHUB_WORKSPACE/src"
+    TELEGRAPH_CONNECTOR_PATH: "$WORKING_DIR/TelegraphConnector/TelegraphConnector.csproj"
+    TELEGRAPH_PARSES_PATH: "$WORKING_DIR/TelegraphConnector.Parses/TelegraphConnector.Parses.csproj"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Update version
+      run: |
+        # Get the current year, month, and day
+        year=$(date +%Y)
+        month=$(date +%m)
+        day=$(date +%d)
+        
+        # Calculate the number of days since the start of the month
+        days_since_start=$((day - 1))
+        
+        # Calculate the number of days since the last Wednesday
+        days_since_wednesday=$(((4 + days_since_start) % 7))
+        
+        # Calculate the week of the month (1-based)
+        week=$(((days_since_start + 3) / 7 + 1))
+
+        if [[ $month -lt 10 ]]; then
+            week="0$month"
+        fi
+
+        if [[ $week -lt 10 ]]; then
+            week="0$week"
+        fi
+
+        echo "::set-env name=build_number::$build_number"
+        
+        version="$year.$month.$week${{ env.build_number }}"
+
+        $build_name = "package-v$version"
+
+        echo "::set-env name=version::$version"
+
+        echo "::set-env name=build_name::$build_name"
+        
+    - name: Build solution
+      run: dotnet build ${{ env.WORKING_DIR }}
+    - name: Run tests
+      run: dotnet test ${{ env.WORKING_DIR }}
+    - name: Create NuGet package for telegraph connector
+      run: dotnet pack ${{ env.TELEGRAPH_CONNECTOR_PATH }} -c Release -o nuget
+    - name: Create NuGet package for telegraph connector parses
+      run: dotnet pack ${{ env.TELEGRAPH_PARSES_PATH }} -c Release -o nuget
+    - name: Deploy NuGet package
+      run: dotnet nuget push nuget/*.nupkg -k ${{ secrets.NUGET_KEY }} -s https://api.nuget.org/v3/index.json
+    - name: Create tag
+      run: |
+        git tag v${{ env.version }}
+        git push origin v${{ env.version }}

@@ -8,6 +8,13 @@
     <Authors>Marcos Costa</Authors>
     <Title>Telegraph Connector Parses</Title>
     <Copyright>MarcosCostaDev © 2022</Copyright>
+    <Description>Enhance your Telegra.ph experience with TelegraphConnector.Parse - the extension for TelegraphConnector that allows you to import HTML and Markdown files for use within the TelegraphConnector package. 
+With this extension, you can easily incorporate external content into your web page, giving you even more flexibility and control. 
+Simply install the extension, authenticate with your Telegra.ph account, and start importing your files. 
+Whether you want to incorporate existing content or create something new, TelegraphConnector.Parses makes it easy to do so. 
+With its easy-to-use methods and comprehensive documentation, TelegraphConnector.Parses is a must-have for anyone using TelegraphConnector.</Description>
+    <RepositoryUrl>https://github.com/MarcosCostaDev/TelegraphConnector.git</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/MarcosCostaDev/TelegraphConnector</PackageProjectUrl>
   </PropertyGroup>
 
   <ItemGroup>
