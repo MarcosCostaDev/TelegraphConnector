@@ -13,7 +13,7 @@ using System.Reflection;
 
 [assembly: System.Runtime.CompilerServices.InternalsVisibleTo("TelegraphConnector.Test")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("MarcosCostaDev")]
-[assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
+[assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyCopyrightAttribute("MarcosCostaDev © 2022")]
 [assembly: System.Reflection.AssemblyDescriptionAttribute("\r\n      Telegra.ph API for .net\r\n      This package allow developers to connect t" +
     "he Telegra.ph API and use its features for create beautiful pages in the Telegra" +
