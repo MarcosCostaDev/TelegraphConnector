@@ -38,10 +38,8 @@ jobs:
         if [[ $week -lt 10 ]]; then
             week="0$week"
         fi
-
-        echo "::set-env name=build_number::$build_number"
-        
-        version="$year.$month.$week${{ env.build_number }}"
+                
+        version="$year.$month.$week${{ github.run_number }}"
 
         $build_name = "package-v$version"
 

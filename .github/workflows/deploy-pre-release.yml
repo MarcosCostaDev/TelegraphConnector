@@ -39,16 +39,19 @@ jobs:
             week="0$week"
         fi
 
-        echo "::set-env name=build_number::$build_number"
-        
-        version="$year.$month.$week${{ env.build_number }}-pre"
+        week_version="$year.$month.$week"                
+
+        version="$week_version${{ github.run_number }}-pre"
 
         $build_name = "package-v$version"
 
+
+        echo "::set-env name=build_number::$build_number"
+        
         echo "::set-env name=version::$version"
 
         echo "::set-env name=build_name::$build_name"
-        
+
     - name: Build solution
       run: dotnet build ${{ env.WORKING_DIR }}
     - name: Run tests
