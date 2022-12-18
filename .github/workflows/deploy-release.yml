@@ -41,7 +41,7 @@ jobs:
                 
         version="$year.$month.$week${{ github.run_number }}"
 
-        $build_name = "package-v$version"
+        build_name="package-v$version"
 
         echo "::set-env name=version::$version"
 
