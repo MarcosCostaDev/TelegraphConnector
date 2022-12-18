@@ -21,8 +21,8 @@ jobs:
       with:
         dotnet-version: 7.0.x
     - name: Restore dependencies
-      run: dotnet restore $WORKING_DIR
+      run: dotnet restore ${{ env.WORKING_DIR }}
     - name: Build solution
-      run: dotnet build $WORKING_DIR --configuration Release
+      run: dotnet build ${{ env.WORKING_DIR }} --configuration Release
     - name: Test projects
-      run: dotnet test $WORKING_DIR --configuration Release --no-build
+      run: dotnet test ${{ env.WORKING_DIR }} --configuration Release --no-build
