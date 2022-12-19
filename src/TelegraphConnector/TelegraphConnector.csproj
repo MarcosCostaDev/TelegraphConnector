@@ -4,7 +4,7 @@
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
     <Title>Telegraph Connector</Title>
     <Description>Introducing TelegraphConnector - the Nuget package that makes it easy to communicate with the Telegra.ph API. 
 With this package, you can create a web page using resources from Telegra.ph, giving you access to a wide range of features and functionality. 

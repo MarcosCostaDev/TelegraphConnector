@@ -124,5 +124,5 @@ jobs:
     steps:
     - name: Create tag
       run: |
-        git tag v${{ env.version }}
-        git push origin v${{ env.version }}
+        git tag v${{ build.steps.deployversion.outputs.version }}
+        git push origin v${{ build.steps.deployversion.outputs.version }}
