@@ -5,15 +5,20 @@ on:
     branches:
       - pre-release
 
-env:
-    WORKING_DIR: ${{ github.workspace }}/src
-    TELEGRAPH_CONNECTOR_PATH: ${{ env.WORKING_DIR }}/TelegraphConnector/TelegraphConnector.csproj
-    TELEGRAPH_PARSES_PATH: ${{ env.WORKING_DIR }}/TelegraphConnector.Parses/TelegraphConnector.Parses.csproj
+
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    env:
+        working_dir: ${{ github.workspace }}/src
     steps:
+    - env:
+        connector_path: ${{ env.working_dir }}/TelegraphConnector/TelegraphConnector.csproj
+        parses_path: ${{ env.working_dir }}/TelegraphConnector.Parses/TelegraphConnector.Parses.csproj
+      run: |
+        echo ${{ env.connector_path }}
+        echo ${{ env.parses_path }}
     - uses: actions/checkout@v2
     - name: Update version
       run: |
@@ -48,13 +53,13 @@ jobs:
         echo "build_name=$build_name" >> $GITHUB_OUTPUT
         
     - name: Build solution
-      run: dotnet build ${{ env.WORKING_DIR }}
+      run: dotnet build ${{ env.working_dir }}
     - name: Run tests
-      run: dotnet test ${{ env.WORKING_DIR }}
+      run: dotnet test ${{ env.working_dir }}
     - name: Create NuGet package for telegraph connector
-      run: dotnet pack ${{ env.TELEGRAPH_CONNECTOR_PATH }} -c Release -o nuget
+      run: dotnet pack ${{ env.connector_path }} -c Release -o nuget
     - name: Create NuGet package for telegraph connector parses
-      run: dotnet pack ${{ env.TELEGRAPH_PARSES_PATH }} -c Release -o nuget
+      run: dotnet pack ${{ env.parses_path }} -c Release -o nuget
     - name: Deploy NuGet package
       run: dotnet nuget push nuget/*.nupkg -k ${{ secrets.NUGET_KEY }} -s https://api.nuget.org/v3/index.json
     - name: Create tag
