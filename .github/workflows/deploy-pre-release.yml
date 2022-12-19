@@ -14,14 +14,9 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-
-    - name: show variables
-      run: |
-        echo ${{ env.working_dir }}
-        echo ${{ env.connector_path }}
-        echo ${{ env.parses_path }}
     - uses: actions/checkout@v2
     - name: Update version
+      id: deployversion
       run: |
         # Get the current year, month, and day
         year=$(date +%Y)
@@ -52,17 +47,24 @@ jobs:
         echo "version=$version" >> $GITHUB_OUTPUT
 
         echo "build_name=$build_name" >> $GITHUB_OUTPUT
-        
+    - name: show variables
+      run: |
+        echo ${{ env.working_dir }}
+        echo ${{ env.connector_path }}
+        echo ${{ env.parses_path }}
+        echo ${{ steps.deployversion.outputs.build_name }}
+        echo ${{ steps.deployversion.outputs.version }}
+
     - name: Build solution
       run: dotnet build ${{ env.working_dir }}
     - name: Run tests
       run: dotnet test ${{ env.working_dir }}
     - name: Create NuGet package for telegraph connector
-      run: dotnet pack ${{ env.connector_path }} -c Release -o ./nuget
+      run: dotnet pack ${{ env.connector_path }} --version-suffix "${{ step.deployversion.outputs.version }}" -c Release -o ./nuget
     - name: Create NuGet package for telegraph connector parses
       run: dotnet pack ${{ env.parses_path }} -c Release -o ./nuget
     - name: Deploy NuGet package
-      run: dotnet nuget push ./nuget/*.nupkg -k ${{ secrets.NUGET_KEY }} -s https://api.nuget.org/v3/index.json
+      run: dotnet nuget push ./nuget/*.nupkg -k ${{ secrets.GT_KEY }} -s "github"
     - name: Create tag
       run: |
         git tag v${{ env.version }}
