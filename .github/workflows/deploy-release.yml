@@ -1,25 +1,25 @@
-name: Release Deployment
+name: Pre-Release Deployment
 
 on:
   push:
     branches:
+      - pre-release
       - release
 
+env:
+    working_dir: ${{ github.workspace }}/src
+    connector_path: ${{ github.workspace }}/src/TelegraphConnector/TelegraphConnector.csproj
+    parses_path: ${{ github.workspace }}/src/TelegraphConnector.Parses/TelegraphConnector.Parses.csproj
+
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
-    env:
-        working_dir: ${{ github.workspace }}/src
     steps:
-    - env:
-        connector_path: ${{ env.working_dir }}/TelegraphConnector/TelegraphConnector.csproj
-        parses_path: ${{ env.working_dir }}/TelegraphConnector.Parses/TelegraphConnector.Parses.csproj
-      run: |
-        echo ${{ env.connector_path }}
-        echo ${{ env.parses_path }}
     - uses: actions/checkout@v2
     - name: Update version
+      id: deployversion
       run: |
+        BUILD_NUMBER="${{ github.run_number }}"
         # Get the current year, month, and day
         year=$(date +%Y)
         month=$(date +%m)
@@ -42,24 +42,74 @@ jobs:
             week="0$week"
         fi
                 
-        version="$year.$month.$week${{ github.run_number }}"
+        version="$year.$month.$week$BUILD_NUMBER"
 
         build_name="package-v$version"
 
         echo "version=$version" >> $GITHUB_OUTPUT
 
         echo "build_name=$build_name" >> $GITHUB_OUTPUT
-        
+    - name: show variables
+      run: |
+        echo ${{ env.working_dir }}
+        echo ${{ env.connector_path }}
+        echo ${{ env.parses_path }}
+        echo ${{ steps.deployversion.outputs.build_name }}
+        echo ${{ steps.deployversion.outputs.version }}
+
     - name: Build solution
       run: dotnet build ${{ env.working_dir }}
     - name: Run tests
       run: dotnet test ${{ env.working_dir }}
     - name: Create NuGet package for telegraph connector
-      run: dotnet pack ${{ env.connector_path }} -c Release -o nuget
+      run: dotnet pack ${{ env.connector_path }} -p:Version='${{ steps.deployversion.outputs.version }}' --version-suffix "pre" -c Release --no-build --no-restore 
     - name: Create NuGet package for telegraph connector parses
-      run: dotnet pack ${{ env.parses_path }} -c Release -o nuget
+      run: dotnet pack ${{ env.parses_path }} -p:Version='${{ steps.deployversion.outputs.version }}' --version-suffix "pre" -c Release --no-build --no-restore 
+    - name: Upload NuGet package to GitHub
+      uses: actions/upload-artifact@v2
+      with:
+        name: nugetPackage
+        path: |
+            ${{ env.working_dir }}/src/TelegraphConnector/bin/Release/
+            ${{ env.working_dir }}/src/TelegraphConnector.Parses/bin/Release/
+            
+
+  pre_release:
+    runs-on: ubuntu-latest    
+    needs: build
+    if: github.ref == 'refs/heads/pre-release'   
+    
+    steps:  
+    - name: Download nuget package artifact
+      uses: actions/download-artifact@v1.0.0
+      with:
+        name: nugetPackage
+    - name: Prep packages
+      run: dotnet nuget add source --username marcoscostadev --password ${{ secrets.GT_KEY }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/marcoscostadev/index.json"
+    - name: Push package to GitHub packages 
+      run: dotnet nuget push nugetPackage/*.nupkg --api-key ${{ secrets.GT_KEY }}  --source "github"
     - name: Deploy NuGet package
-      run: dotnet nuget push nuget/*.nupkg -k ${{ secrets.NUGET_KEY }} -s https://api.nuget.org/v3/index.json
+      run: dotnet nuget push ./nuget/*.nupkg -k ${{ secrets.GT_KEY }} -s "github"
+  release:
+    runs-on: ubuntu-latest    
+    needs: build
+    if: github.ref == 'refs/heads/release'   
+    
+    steps:  
+    - name: Download nuget package artifact
+      uses: actions/download-artifact@v1.0.0
+      with:
+        name: nugetPackage
+    - name: Prep packages
+      run: dotnet nuget add source --username marcoscostadev --password ${{ secrets.GT_KEY }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/marcoscostadev/index.json"
+    - name: Push package to GitHub packages 
+      run: dotnet nuget push nugetPackage/*.nupkg --api-key ${{ secrets.GT_KEY }}  --source "github"
+    - name: Deploy NuGet package
+      run: dotnet nuget push ./nuget/*.nupkg -k ${{ secrets.GT_KEY }} -s "github"
+  tag: 
+    runs-on: ubuntu-latest    
+    needs: [release, pre_release]
+    steps:
     - name: Create tag
       run: |
         git tag v${{ env.version }}
