@@ -6,9 +6,9 @@ on:
       - pre-release
 
 env:
-    WORKING_DIR: "$GITHUB_WORKSPACE/src"
-    TELEGRAPH_CONNECTOR_PATH: "$WORKING_DIR/TelegraphConnector/TelegraphConnector.csproj"
-    TELEGRAPH_PARSES_PATH: "$WORKING_DIR/TelegraphConnector.Parses/TelegraphConnector.Parses.csproj"
+    WORKING_DIR: "${{ GITHUB_WORKSPACE }}/src"
+    TELEGRAPH_CONNECTOR_PATH: "${{ WORKING_DIR }}/TelegraphConnector/TelegraphConnector.csproj"
+    TELEGRAPH_PARSES_PATH: "${{ WORKING_DIR }}/TelegraphConnector.Parses/TelegraphConnector.Parses.csproj"
 
 jobs:
   deploy:
