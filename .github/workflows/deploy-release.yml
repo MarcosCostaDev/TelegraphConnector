@@ -6,7 +6,7 @@ on:
       - pre-release
 
 env:
-    WORKING_DIR: "${{ env.GITHUB_WORKSPACE }}/src"
+    WORKING_DIR: "${{ github.workspace }}/src"
     TELEGRAPH_CONNECTOR_PATH: "${{ env.WORKING_DIR }}/TelegraphConnector/TelegraphConnector.csproj"
     TELEGRAPH_PARSES_PATH: "${{ env.WORKING_DIR }}/TelegraphConnector.Parses/TelegraphConnector.Parses.csproj"
 
