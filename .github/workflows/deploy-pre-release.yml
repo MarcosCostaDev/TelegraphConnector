@@ -10,11 +10,10 @@ jobs:
     runs-on: ubuntu-latest
     env:
         working_dir: ${{ github.workspace }}/src
-    steps:
-    - env:
         connector_path: ${{ env.working_dir }}/TelegraphConnector/TelegraphConnector.csproj
         parses_path: ${{ env.working_dir }}/TelegraphConnector.Parses/TelegraphConnector.Parses.csproj
-      run: |
+    steps:
+    - run: |
         echo ${{ env.connector_path }}
         echo ${{ env.parses_path }}
     - uses: actions/checkout@v2
