@@ -60,9 +60,9 @@ jobs:
     - name: Run tests
       run: dotnet test ${{ env.working_dir }}
     - name: Create NuGet package for telegraph connector
-      run: dotnet pack ${{ env.connector_path }} --version-suffix "${{ step.deployversion.outputs.version }}" -c Release -o ./nuget
+      run: dotnet pack ${{ env.connector_path }} --version-suffix "${{ steps.deployversion.outputs.version }}" -c Release -o ./nuget
     - name: Create NuGet package for telegraph connector parses
-      run: dotnet pack ${{ env.parses_path }} -c Release -o ./nuget
+      run: dotnet pack ${{ env.parses_path }} --version-suffix "${{ steps.deployversion.outputs.version }}" -c Release -o ./nuget
     - name: Deploy NuGet package
       run: dotnet nuget push ./nuget/*.nupkg -k ${{ secrets.GT_KEY }} -s "github"
     - name: Create tag
