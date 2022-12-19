@@ -100,7 +100,8 @@ jobs:
     - name: Push package to GitHub packages 
       run: dotnet nuget push nugetPackage/**/*.nupkg --api-key ${{ secrets.GH_KEY }}  --source "github"
     - name: Deploy NuGet package
-      run: dotnet nuget push nugetPackage/**/*.nupkg -k ${{ secrets.GT_KEY }} -s "github"
+      run: dotnet nuget push nugetPackage/**/*.nupkg -k ${{ secrets.GH_KEY }} -s "github"
+
   release:
     runs-on: ubuntu-latest    
     needs: build
@@ -112,11 +113,11 @@ jobs:
       with:
         name: nugetPackage
     - name: Prep packages
-      run: dotnet nuget add source --username marcoscostadev --password ${{ secrets.GT_KEY }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/marcoscostadev/index.json"
+      run: dotnet nuget add source --username MarcosCostaDev --password ${{ secrets.GH_KEY }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/marcoscostadev/index.json"
     - name: Push package to GitHub packages 
-      run: dotnet nuget push nugetPackage/*.nupkg --api-key ${{ secrets.GT_KEY }}  --source "github"
+      run: dotnet nuget push nugetPackage/**/*.nupkg --api-key ${{ secrets.GH_KEY }}  --source "github"
     - name: Deploy NuGet package
-      run: dotnet nuget push ./nuget/*.nupkg -k ${{ secrets.GT_KEY }} -s "github"
+      run: dotnet nuget push ./nuget/**/*.nupkg -k ${{ secrets.GH_KEY }} -s "github"
   tag: 
     runs-on: ubuntu-latest    
     needs: [release, pre_release]
