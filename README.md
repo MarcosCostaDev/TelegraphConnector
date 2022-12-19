@@ -7,7 +7,7 @@
  
 
 
-Introducing TelegraphConnector - the Nuget package that makes it easy to communicate with the Telegra.ph API. With this package, you can easily create and publish web pages using resources from Telegra.ph, giving you access to a wide range of features and functionality.
+Introducing TelegraphConnector - the Nuget package that makes it easy to communicate with the [Telegra.ph API](https://telegra.ph/api). With this package, you can easily create and publish web pages using resources from [Telegra.ph](https://telegram.org/blog/telegraph), giving you access to a wide range of features and functionality.
 
 Whether you want to publish articles, or share multimedia content, TelegraphConnector makes it simple and straightforward to do so. Simply install the package, create or authenticate with your Telegra.ph account, and start building your web page for use in the Telegram instant view feature.
 
@@ -73,6 +73,16 @@ PageService pageService = new PageService();
 TelegraphResponse<Page> createdPage = await pageService.CreatePageAsync(account.AccessToken, page);
 
 ```
+
+### Types
+
+All the types are listed in `TelegraphConnector.Types` that are a representation of [available types](https://telegra.ph/api#Available-types) in the telegraph api:
+
+- [Account](https://telegra.ph/api#Account) - This object represents a Telegraph account. 
+- [Node](https://telegra.ph/api#Node) - This abstract object represents a DOM Node. It can be a String which represents a DOM text node or a NodeElement object.
+- [Page](https://telegra.ph/api#Page) - This object represents a page on Telegraph.
+- [PageList](https://telegra.ph/api#PageList) - This object represents a list of Telegraph articles belonging to an account. Most recently created articles first.
+- [PageViews](https://telegra.ph/api#PageViews) - This object represents the number of page views for a Telegraph article.
 
 
 ## Telegraph Connector Parses !
