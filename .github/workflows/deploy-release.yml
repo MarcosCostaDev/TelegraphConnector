@@ -14,6 +14,8 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
+    outputs: 
+      version: ${{ steps.deployversion.outputs.version }}
     steps:
     - uses: actions/checkout@v2
 
@@ -45,6 +47,10 @@ jobs:
                 
         version="$year.$month.$week$BUILD_NUMBER"
 
+        if [[ "${{ github.ref }}" == "refs/heads/pre-release" ]]; then
+            version="$version-pre"
+        fi
+
         build_name="package-v$version"
 
         echo "version=$version" >> $GITHUB_OUTPUT
@@ -71,21 +77,11 @@ jobs:
       run: dotnet test ${{ env.working_dir }}
 
     - name: Telegraph Preview Release
-      if: github.ref == 'refs/heads/pre-release'   
-      run: dotnet pack ${{ env.connector_path }} -p:Version='${{ steps.deployversion.outputs.version }}-pre' -c Release --no-build --no-restore 
-
-    - name: Telegraph.Parses Preview Release
-      if: github.ref == 'refs/heads/pre-release'   
-      run: dotnet pack ${{ env.parses_path }} -p:Version='${{ steps.deployversion.outputs.version }}-pre' -c Release --no-build --no-restore
-      
-    - name: Telegraph Release
-      if: github.ref == 'refs/heads/release'   
       run: dotnet pack ${{ env.connector_path }} -p:Version='${{ steps.deployversion.outputs.version }}' -c Release --no-build --no-restore 
 
-    - name: Telegraph.Parses Release
-      if: github.ref == 'refs/heads/release'   
-      run: dotnet pack ${{ env.parses_path }} -p:Version='${{ steps.deployversion.outputs.version }}' -c Release --no-build --no-restore 
-
+    - name: Telegraph.Parses Preview Release
+      run: dotnet pack ${{ env.parses_path }} -p:Version='${{ steps.deployversion.outputs.version }}' -c Release --no-build --no-restore
+     
     - name: Upload NuGet package to GitHub
       uses: actions/upload-artifact@v2
       with:
@@ -98,8 +94,6 @@ jobs:
   pre_release:
     runs-on: ubuntu-latest    
     needs: build
-    outputs: 
-      Version: ${{ needs.build.steps.deployversion.outputs.version }}
     if: 1 == 0 # github.ref == 'refs/heads/pre-release'   
     
     steps:  
@@ -128,7 +122,8 @@ jobs:
     runs-on: ubuntu-latest    
     needs: build
     steps:
-    - name: Create tag
-      run: |
-        git tag v${{ needs.build.steps.deployversion.outputs.version }}
-        git push origin v${{ needs.build.steps.deployversion.outputs.version }}
+      - uses: actions/checkout@v3
+      - uses: rickstaa/action-create-tag@v1
+        with:
+          tag: "v${{ needs.build.outputs.version }}"
+          message: "v${{ needs.build.outputs.version }}"
