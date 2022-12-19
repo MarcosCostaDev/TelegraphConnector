@@ -13,7 +13,7 @@ using System.Reflection;
 
 [assembly: System.Runtime.CompilerServices.InternalsVisibleTo("TelegraphConnector.Test")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("MarcosCostaDev")]
-[assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
+[assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyCopyrightAttribute("MarcosCostaDev © 2022")]
 [assembly: System.Reflection.AssemblyDescriptionAttribute(@"Introducing TelegraphConnector - the Nuget package that makes it easy to communicate with the Telegra.ph API. 
 With this package, you can create a web page using resources from Telegra.ph, giving you access to a wide range of features and functionality. 

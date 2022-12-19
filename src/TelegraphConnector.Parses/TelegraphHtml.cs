@@ -5,10 +5,11 @@ namespace TelegraphConnector.Parses
 {
     public class TelegraphHtml
     {
-        private static readonly Regex _regex = new Regex("<(?<tag>[^\\s>]+)(?<attributes>\\s[^>]+)?>(?<content>.+?)</\\k<tag>>", RegexOptions.Singleline);
-        private static readonly Regex _attributeRegex = new Regex(@"\s(?<key>[^\s=]+)=['""](?<value>.+?)['""]", RegexOptions.Singleline);
-        private static readonly Regex _bodyRegex = new Regex("<body>(?<content>.+?)</body>", RegexOptions.Singleline);
-        private static readonly Regex _beforeAfterTagRegex = new Regex("(?<before>.+?)<[^>]+>(?<after>.+?)", RegexOptions.Singleline);
+        private static readonly Regex _regex = new("<(?<tag>[^\\s>]+)(?<attributes>\\s[^>]+)?>(?<content>.+?)</\\k<tag>>", RegexOptions.Singleline);
+        private static readonly Regex _attributeRegex = new(@"\s(?<key>[^\s=]+)=['""](?<value>.+?)['""]", RegexOptions.Singleline);
+        private static readonly Regex _bodyRegex = new("<body>(?<content>.+?)</body>", RegexOptions.Singleline);
+        private static readonly Regex _textBeforeTag = new("([^<]*)", RegexOptions.Singleline);
+        private static readonly Regex _textAfterTag = new("([^<]*)", RegexOptions.Singleline);
         private static readonly string[] _allowedTags = new string[]
         {
             "a", "aside", "b", "blockquote", "br", "code", "em", "figcaption",
@@ -81,6 +82,15 @@ namespace TelegraphConnector.Parses
 
             var nodes = new List<Node>();
             Match innerMatch = _regex.Match(content);
+
+            var textBefore = _textBeforeTag.Match(content).Value;
+
+            if (!string.IsNullOrWhiteSpace(textBefore))
+            {
+                var textNode = Node.CreateTextNode(textBefore.Trim());
+                nodes.Add(textNode);
+            }
+
             while (innerMatch.Success)
             {
                 string innerTag = innerMatch.Groups["tag"].Value;
@@ -110,60 +120,13 @@ namespace TelegraphConnector.Parses
 
                 innerRootTag.AddChildren(innerTagNodes.ToArray());
 
-                Match matchBeforeAfter = _beforeAfterTagRegex.Match(content);
 
-                if (matchBeforeAfter.Success)
-                {
-                    var before = matchBeforeAfter.Groups["before"].Value;
-                    var after = matchBeforeAfter.Groups["after"].Value;
-
-                    if (!string.IsNullOrEmpty(before?.Trim()))
-                    {
-                        var textNodeBefore = Node.CreateTextNode(before.Trim());
-                        innerRootTag.InsertChildren(0, textNodeBefore);
-                    }
-
-                    if (!string.IsNullOrEmpty(after?.Trim()))
-                    {
-                        var textNodeAfter = Node.CreateTextNode(after);
-
-                        innerRootTag.AddChildren(textNodeAfter);
-                    }
-                }
 
                 nodes.Add(innerRootTag);
                 innerMatch = innerMatch.NextMatch();
             }
 
-            if (!innerMatch.Success && !string.IsNullOrEmpty(content))
-            {
-                Match matchBeforeAfter = _beforeAfterTagRegex.Match(content);
 
-                if (matchBeforeAfter.Success)
-                {
-                    var before = matchBeforeAfter.Groups["before"].Value;
-                    var after = matchBeforeAfter.Groups["after"].Value;
-
-                    if (!string.IsNullOrEmpty(before?.Trim()))
-                    {
-                        var textNodeBefore = Node.CreateTextNode(before.Trim());
-                        nodes.Insert(0, textNodeBefore);
-                    }
-
-                    if (!string.IsNullOrEmpty(after?.Trim()))
-                    {
-                        var textNodeAfter = Node.CreateTextNode(after);
-
-                        nodes.Add(textNodeAfter);
-                    }
-                }
-                else
-                {
-                    var textNode = Node.CreateTextNode(content);
-                    nodes.Add(textNode);
-                }
-
-            }
 
 
 
