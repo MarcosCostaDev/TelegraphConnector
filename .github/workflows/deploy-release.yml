@@ -8,8 +8,8 @@ on:
 
 env:
     working_dir: ${{ github.workspace }}/src
-    connector_path: ${{ github.workspace }}/src/TelegraphConnector/TelegraphConnector.csproj
-    parses_path: ${{ github.workspace }}/src/TelegraphConnector.Parses/TelegraphConnector.Parses.csproj
+    connector_path: src/TelegraphConnector/TelegraphConnector.csproj
+    parses_path: src/TelegraphConnector.Parses/TelegraphConnector.Parses.csproj
 
 jobs:
   build:
