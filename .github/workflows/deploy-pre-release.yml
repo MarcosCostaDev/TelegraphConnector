@@ -10,8 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     env:
         working_dir: ${{ github.workspace }}/src
-        connector_path: ${{ env.working_dir }}/TelegraphConnector/TelegraphConnector.csproj
-        parses_path: ${{ env.working_dir }}/TelegraphConnector.Parses/TelegraphConnector.Parses.csproj
+        connector_path: ${{ github.workspace }}/src/TelegraphConnector/TelegraphConnector.csproj
+        parses_path: ${{ github.workspace }}/src/TelegraphConnector.Parses/TelegraphConnector.Parses.csproj
     steps:
     - run: |
         echo ${{ env.connector_path }}
