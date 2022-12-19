@@ -88,6 +88,8 @@ jobs:
   pre_release:
     runs-on: ubuntu-latest    
     needs: build
+    outputs: 
+      Version: ${{ needs.build.steps.deployversion.outputs.version }}
     if: github.ref == 'refs/heads/pre-release'   
     
     steps:  
@@ -124,5 +126,5 @@ jobs:
     steps:
     - name: Create tag
       run: |
-        git tag v${{ jobs.build.steps.deployversion.outputs.version }}
-        git push origin v${{ jobs.build.steps.deployversion.outputs.version }}
+        git tag v${{ needs.pre_release.outputs.version }}
+        git push origin v${{ needs.pre_release.outputs.version }}
