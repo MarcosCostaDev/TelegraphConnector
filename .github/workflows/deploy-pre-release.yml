@@ -18,6 +18,7 @@ jobs:
     - name: Update version
       id: deployversion
       run: |
+        BUILD_NUMBER="${{ github.run_number }}"
         # Get the current year, month, and day
         year=$(date +%Y)
         month=$(date +%m)
@@ -40,7 +41,7 @@ jobs:
             week="0$week"
         fi
                 
-        version="$year.$month.$week${{ github.run_number }}"
+        version="$year.$month.$week$BUILD_NUMBER"
 
         build_name="package-v$version"
 
@@ -60,9 +61,9 @@ jobs:
     - name: Run tests
       run: dotnet test ${{ env.working_dir }}
     - name: Create NuGet package for telegraph connector
-      run: dotnet pack ${{ env.connector_path }} --version-suffix "${{ steps.deployversion.outputs.version }}" -c Release -o ./nuget
+      run: dotnet pack ${{ env.connector_path }} -p:Version='${{ steps.deployversion.outputs.version }}' --version-suffix "pre" -c Release -o ./nuget
     - name: Create NuGet package for telegraph connector parses
-      run: dotnet pack ${{ env.parses_path }} --version-suffix "${{ steps.deployversion.outputs.version }}" -c Release -o ./nuget
+      run: dotnet pack ${{ env.parses_path }} -p:Version='${{ steps.deployversion.outputs.version }}' --version-suffix "pre" -c Release -o ./nuget
     - name: Deploy NuGet package
       run: dotnet nuget push ./nuget/*.nupkg -k ${{ secrets.GT_KEY }} -s "github"
     - name: Create tag
