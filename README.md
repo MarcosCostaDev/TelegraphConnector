@@ -1,6 +1,11 @@
 # Telegraph Connector!
 
-[![Build](https://github.com/MarcosCostaDev/TelegraphConnector/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/MarcosCostaDev/TelegraphConnector/actions/workflows/build-and-test.yml)
+| Build | TelegraphConnector | TelegraphConnector.Parses |
+|--------|--------|--------|
+| [![Build](https://github.com/MarcosCostaDev/TelegraphConnector/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/MarcosCostaDev/TelegraphConnector/actions/workflows/build-and-test.yml)| ![Nuget](https://img.shields.io/nuget/v/TelegraphConnector) | ![Nuget](https://img.shields.io/nuget/v/TelegraphConnector.Parses?logo=%20) |
+
+ 
+
 
 Introducing TelegraphConnector - the Nuget package that makes it easy to communicate with the Telegra.ph API. With this package, you can easily create and publish web pages using resources from Telegra.ph, giving you access to a wide range of features and functionality.
 
