@@ -7,7 +7,7 @@ on:
       - release
 
 env:
-    working_dir: ${{ github.workspace }}/src
+    working_dir: src
     connector_path: src/TelegraphConnector/TelegraphConnector.csproj
     parses_path: src/TelegraphConnector.Parses/TelegraphConnector.Parses.csproj
 
@@ -16,6 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+
     - name: Update version
       id: deployversion
       run: |
@@ -49,6 +50,7 @@ jobs:
         echo "version=$version" >> $GITHUB_OUTPUT
 
         echo "build_name=$build_name" >> $GITHUB_OUTPUT
+
     - name: show variables
       run: |
         echo ${{ env.working_dir }}
@@ -56,18 +58,24 @@ jobs:
         echo ${{ env.parses_path }}
         echo ${{ steps.deployversion.outputs.build_name }}
         echo ${{ steps.deployversion.outputs.version }}
+
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 7.0.x
+
     - name: Build solution
-      run: dotnet build ${{ env.working_dir }}
+      run: dotnet build ${{ env.working_dir }} -c Release
+
     - name: Run tests
       run: dotnet test ${{ env.working_dir }}
+
     - name: Create NuGet package for telegraph connector
       run: dotnet pack ${{ env.connector_path }} -p:Version='${{ steps.deployversion.outputs.version }}' --version-suffix "pre" -c Release --no-build --no-restore 
+
     - name: Create NuGet package for telegraph connector parses
       run: dotnet pack ${{ env.parses_path }} -p:Version='${{ steps.deployversion.outputs.version }}' --version-suffix "pre" -c Release --no-build --no-restore 
+
     - name: Upload NuGet package to GitHub
       uses: actions/upload-artifact@v2
       with:
