@@ -1,19 +1,22 @@
-name: Deploy Nuget Package
+name: Pre-Release Deployment
 
 on:
   push:
     branches:
-      - release
-
-env:
-    WORKING_DIR: "$GITHUB_WORKSPACE/src"
-    TELEGRAPH_CONNECTOR_PATH: "$WORKING_DIR/TelegraphConnector/TelegraphConnector.csproj"
-    TELEGRAPH_PARSES_PATH: "$WORKING_DIR/TelegraphConnector.Parses/TelegraphConnector.Parses.csproj"
+      - pre-release
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    env:
+        working_dir: ${{ github.workspace }}/src
     steps:
+    - env:
+        connector_path: ${{ env.working_dir }}/TelegraphConnector/TelegraphConnector.csproj
+        parses_path: ${{ env.working_dir }}/TelegraphConnector.Parses/TelegraphConnector.Parses.csproj
+      run: |
+        echo ${{ env.connector_path }}
+        echo ${{ env.parses_path }}
     - uses: actions/checkout@v2
     - name: Update version
       run: |
@@ -38,30 +41,25 @@ jobs:
         if [[ $week -lt 10 ]]; then
             week="0$week"
         fi
+                
+        version="$year.$month.$week${{ github.run_number }}"
 
-        week_version="$year.$month.$week"                
+        build_name="package-v$version"
 
-        version="$week_version${{ github.run_number }}-pre"
+        echo "version=$version" >> $GITHUB_OUTPUT
 
-        $build_name = "package-v$version"
-
-
-        echo "::set-env name=build_number::$build_number"
+        echo "build_name=$build_name" >> $GITHUB_OUTPUT
         
-        echo "::set-env name=version::$version"
-
-        echo "::set-env name=build_name::$build_name"
-
     - name: Build solution
-      run: dotnet build ${{ env.WORKING_DIR }}
+      run: dotnet build ${{ env.working_dir }}
     - name: Run tests
-      run: dotnet test ${{ env.WORKING_DIR }}
+      run: dotnet test ${{ env.working_dir }}
     - name: Create NuGet package for telegraph connector
-      run: dotnet pack ${{ env.TELEGRAPH_CONNECTOR_PATH }} -c Release -o nuget
+      run: dotnet pack ${{ env.connector_path }} -c Release -o nuget
     - name: Create NuGet package for telegraph connector parses
-      run: dotnet pack ${{ env.TELEGRAPH_PARSES_PATH }} -c Release -o nuget
+      run: dotnet pack ${{ env.parses_path }} -c Release -o nuget
     - name: Deploy NuGet package
-      run: dotnet nuget push nuget/*.nupkg -k ${{ secrets.GH_KEY }} -s https://nuget.pkg.github.com/MarcosCostaDev/index.json
+      run: dotnet nuget push nuget/*.nupkg -k ${{ secrets.NUGET_KEY }} -s https://api.nuget.org/v3/index.json
     - name: Create tag
       run: |
         git tag v${{ env.version }}

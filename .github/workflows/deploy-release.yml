@@ -1,11 +1,9 @@
-name: Deploy Nuget Package
+name: Release Deployment
 
 on:
   push:
     branches:
       - pre-release
-
-
 
 jobs:
   deploy:
