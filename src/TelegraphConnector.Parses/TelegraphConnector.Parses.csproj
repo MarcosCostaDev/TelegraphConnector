@@ -15,6 +15,7 @@ Whether you want to incorporate existing content or create something new, Telegr
 With its easy-to-use methods and comprehensive documentation, TelegraphConnector.Parses is a must-have for anyone using TelegraphConnector.</Description>
     <RepositoryUrl>https://github.com/MarcosCostaDev/TelegraphConnector.git</RepositoryUrl>
     <PackageProjectUrl>https://github.com/MarcosCostaDev/TelegraphConnector</PackageProjectUrl>
+    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>
