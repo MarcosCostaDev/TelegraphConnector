@@ -81,8 +81,8 @@ jobs:
       with:
         name: nugetPackage
         path: |
-            ${{ env.working_dir }}/src/TelegraphConnector/bin/Release/
-            ${{ env.working_dir }}/src/TelegraphConnector.Parses/bin/Release/
+            ${{ env.working_dir }}/TelegraphConnector/bin/Release/
+            ${{ env.working_dir }}/TelegraphConnector.Parses/bin/Release/
             
 
   pre_release:
