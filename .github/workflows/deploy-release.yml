@@ -43,9 +43,9 @@ jobs:
 
         build_name="package-v$version"
 
-        echo "::set-env name=version::$version"
+        echo "version=$version" >> $GITHUB_OUTPUT
 
-        echo "::set-env name=build_name::$build_name"
+        echo "build_name=$build_name" >> $GITHUB_OUTPUT
         
     - name: Build solution
       run: dotnet build ${{ env.WORKING_DIR }}
