@@ -94,7 +94,7 @@ jobs:
   pre_release:
     runs-on: ubuntu-latest    
     needs: build
-    if: 1 == 0 # github.ref == 'refs/heads/pre-release'   
+    if: github.ref == 'refs/heads/pre-release'   
     
     steps:  
     - name: Download nuget package artifact
