@@ -2,7 +2,14 @@
 We welcome contributions to TelegraphConnector! If you're interested in contributing, here are some guidelines to get you started.
 
 ## Trunk Based Development
-TelegraphConnector uses Trunk Based Development as our approach to version control and code management. This means that all code is developed in a single branch, usually called main, and all changes are made in the form of small, incremental commits.
+TelegraphConnector uses Trunk Based Development as our approach to version control and code management.
+This means that all code is developed in a single branch, usually called main, and all changes are made in different branches such as `feature/` for new features in **TelegraphConnector**, or `fix/` for fixing any issue reported in the github issues.
+
+We also keep a `release` branch in which have the most recent version deployied to the [TelegraphConnector - nuget.org](https://www.nuget.org/packages/TelegraphConnector/) and 
+[TelegraphConnector.Parses - nuget.org](https://www.nuget.org/packages/TelegraphConnector.Parses/).
+
+Plus, we keep a `pre-release` branch in which have the most recent preview version created without futher tests in [TelegraphConnector - github](https://github.com/MarcosCostaDev/TelegraphConnector/pkgs/nuget/TelegraphConnector) and,
+[TelegraphConnector.Parses - github](https://github.com/MarcosCostaDev/TelegraphConnector/pkgs/nuget/TelegraphConnector.Parses)
 
 ## How to Contribute
 Here's how you can contribute to TelegraphConnector:
