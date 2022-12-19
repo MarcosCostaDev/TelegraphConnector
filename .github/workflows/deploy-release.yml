@@ -95,8 +95,10 @@ jobs:
       uses: actions/download-artifact@v1.0.0
       with:
         name: nugetPackage
+    - name: Prep packages
+      run: dotnet nuget add source --username MarcosCostaDev --password ${{ secrets.GH_KEY }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/marcoscostadev/index.json"
     - name: Push package to GitHub packages 
-      run: dotnet nuget push nugetPackage/*.nupkg --api-key ${{ secrets.GT_KEY }}  --source "github"
+      run: dotnet nuget push nugetPackage/*.nupkg --api-key ${{ secrets.GH_KEY }}  --source "github"
     - name: Deploy NuGet package
       run: dotnet nuget push ./nuget/*.nupkg -k ${{ secrets.GT_KEY }} -s "github"
   release:
