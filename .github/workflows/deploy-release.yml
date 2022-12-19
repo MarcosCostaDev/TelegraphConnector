@@ -70,19 +70,19 @@ jobs:
     - name: Run tests
       run: dotnet test ${{ env.working_dir }}
 
-    - name: Telegraph Pre Release
+    - name: Telegraph Preview Release
       if: github.ref == 'refs/heads/pre-release'   
       run: dotnet pack ${{ env.connector_path }} -p:Version='${{ steps.deployversion.outputs.version }}-pre' -c Release --no-build --no-restore 
 
-    - name: Telegraph.Parses Pre Release
+    - name: Telegraph.Parses Preview Release
       if: github.ref == 'refs/heads/pre-release'   
       run: dotnet pack ${{ env.parses_path }} -p:Version='${{ steps.deployversion.outputs.version }}-pre' -c Release --no-build --no-restore
       
-    - name: Telegraph Pre Release
+    - name: Telegraph Release
       if: github.ref == 'refs/heads/release'   
       run: dotnet pack ${{ env.connector_path }} -p:Version='${{ steps.deployversion.outputs.version }}' -c Release --no-build --no-restore 
 
-    - name: Telegraph.Parses Pre Release
+    - name: Telegraph.Parses Release
       if: github.ref == 'refs/heads/release'   
       run: dotnet pack ${{ env.parses_path }} -p:Version='${{ steps.deployversion.outputs.version }}' -c Release --no-build --no-restore 
 
@@ -100,7 +100,7 @@ jobs:
     needs: build
     outputs: 
       Version: ${{ needs.build.steps.deployversion.outputs.version }}
-    if: github.ref == 'refs/heads/pre-release'   
+    if: github.ref == 'refs/heads/release'   
     
     steps:  
     - name: Download nuget package artifact
@@ -115,20 +115,20 @@ jobs:
   release:
     runs-on: ubuntu-latest    
     needs: build
-    if: github.ref == 'refs/heads/release'   
+    if: github.ref == 'refs/heads/pre-release'   
     
     steps:  
     - name: Download nuget package artifact
       uses: actions/download-artifact@v1.0.0
       with:
         name: nugetPackage
-    - name: Prep packages
-      run: dotnet nuget add source --username MarcosCostaDev --password ${{ secrets.GH_KEY }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/marcoscostadev/index.json"
+    - name: Push package to GitHub packages 
+      run: dotnet nuget push nugetPackage/**/*.nupkg --api-key ${{ secrets.NUGET_KEY }}  --source https://api.nuget.org/v3/index.json
   tag: 
     runs-on: ubuntu-latest    
-    needs: [release, pre_release]
+    needs: build
     steps:
     - name: Create tag
       run: |
-        git tag v${{ needs.pre_release.outputs.version }}
-        git push origin v${{ needs.pre_release.outputs.version }}
+        git tag v${{ needs.build.outputs.version }}
+        git push origin v${{ needs.build.outputs.version }}
