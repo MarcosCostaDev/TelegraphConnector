@@ -75,5 +75,15 @@ namespace TelegraphConnector.Parses.Test
 
             //sut.Tag.Should().Be("div");
         }
+
+        [Fact]
+        public void HtmlParse_example_4_without_body_tag_3_paragraphs()
+        {
+            var htmlContent = GetTextFromFile("example_4.html");
+
+            var sut = TelegraphHtml.Parse(htmlContent);
+
+            //sut.Tag.Should().Be("div");
+        }
     }
 }
