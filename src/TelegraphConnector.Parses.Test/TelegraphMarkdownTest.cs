@@ -20,7 +20,7 @@ namespace TelegraphConnector.Parses.Test
             sut.Should().HaveCount(1);
 
             sut.ElementAt(0).Tag.Should().Be("p");
-            sut.ElementAt(0).Children.Should().HaveCount(5);
+            sut.ElementAt(0).Children.Should().HaveCount(4);
         }
 
         [Fact]

@@ -3,9 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
+using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 using TelegraphConnector.Services;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace TelegraphConnector.Types
 {
@@ -15,10 +17,16 @@ namespace TelegraphConnector.Types
 
         public static Page Create(Account account, string title, Node[] content, bool returnContent = false)
         {
+            ArgumentNullException.ThrowIfNullOrEmpty(nameof(account));
+            ArgumentNullException.ThrowIfNullOrEmpty(nameof(title));
+
             return Create(title, account.AuthorName, account.AuthorUrl, content, returnContent);
         }
         public static Page Create(string title, string authorName, string authorUrl, Node[] content, bool returnContent = false)
-        {
+        {          
+            ArgumentNullException.ThrowIfNullOrEmpty(nameof(title));
+            ArgumentNullException.ThrowIfNullOrEmpty(nameof(authorName));
+
             var page = new Page()
             {
                 Title = title,
@@ -52,6 +60,9 @@ namespace TelegraphConnector.Types
 
         public static Page Get(string path, bool returnContent = false)
         {
+            ArgumentNullException.ThrowIfNullOrEmpty(nameof(path));
+
+
             var page = new Page()
             {
                 Path = path,
@@ -62,6 +73,9 @@ namespace TelegraphConnector.Types
 
         public static Page GetViews(string path)
         {
+            ArgumentNullException.ThrowIfNullOrEmpty(nameof(path));
+
+
             var page = new Page()
             {
                 Path = path

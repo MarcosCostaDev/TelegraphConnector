@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using TelegraphConnector.Exceptions;
@@ -94,9 +95,8 @@ namespace TelegraphConnector.Types
 
         public static Node CreateAnchor(string text, string link)
         {
-            if(string.IsNullOrEmpty(link)) throw new ArgumentNullException("link");
-            if (string.IsNullOrEmpty(text)) throw new ArgumentNullException("text");
-
+            ArgumentNullException.ThrowIfNullOrEmpty(text, nameof(text));
+            ArgumentNullException.ThrowIfNullOrEmpty(link, nameof(link));
 
             var attrs = new KeyValuePair<string, string>[]
             {
