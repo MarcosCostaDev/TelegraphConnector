@@ -49,7 +49,8 @@ namespace TelegraphConnector.Parses.Test
             listOrdered.Children[2].Children[0].Value.Should().Be("Item 3");
 
 
-            thirdParagraph.Children[0].Tag.Should().Be("_text");
+            thirdParagraph.Children[0].Tag.Should().Be("p");
+            thirdParagraph.Children[0].Children[0].Tag.Should().Be("_text");
             thirdParagraph.Children[2].Tag.Should().Be("ul");
 
             var listUnordered = thirdParagraph.Children.ElementAt(2);

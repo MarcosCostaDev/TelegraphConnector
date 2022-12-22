@@ -8,8 +8,7 @@ namespace TelegraphConnector.Parses
         private static readonly Regex _regex = new("<(?<tag>[^\\s>]+)(?<attributes>\\s[^>]+)?>(?<content>.+?)</\\k<tag>>", RegexOptions.Singleline);
         private static readonly Regex _attributeRegex = new(@"\s(?<key>[^\s=]+)=['""](?<value>.+?)['""]", RegexOptions.Singleline);
         private static readonly Regex _bodyRegex = new("<body>(?<content>.+?)</body>", RegexOptions.Singleline);
-        private static readonly Regex _textBeforeTag = new("([^<]*)", RegexOptions.Singleline);
-        private static readonly Regex _textAfterTag = new("([^<]*)", RegexOptions.Singleline);
+        private static readonly Regex _textOutsideTag = new(@"(?<innerTags><([^>]+?)([^>]*?)>(.*?)<\/\1>)", RegexOptions.Singleline); // <([^>]+?)([^>]*?)>(.*?)<\/\1>
         private static readonly string[] _allowedTags = new string[]
         {
             "a", "aside", "b", "blockquote", "br", "code", "em", "figcaption",
@@ -21,7 +20,7 @@ namespace TelegraphConnector.Parses
             var result = Regex.Replace(html, "<h[2-6](.*?)>(.*?)</h[2-6]>", "<h4$1>$2</h4>", RegexOptions.Singleline);
             result = Regex.Replace(result, "<h1(.*?)>(.*?)</h1>", "<h3$1>$2</h3>", RegexOptions.Singleline);
 
-            return result.Replace("\r", string.Empty).Replace("\n", string.Empty);
+            return result;//.Replace("\r", string.Empty).Replace("\n", string.Empty);
         }
         private static string SanitizeHtml(string html)
         {
@@ -81,15 +80,51 @@ namespace TelegraphConnector.Parses
         private static IEnumerable<Node> ExtractInnerTags(string content)
         {
 
+            content = content.Trim();
             var nodes = new List<Node>();
-            Match innerMatch = _regex.Match(content);
 
-            var textBefore = _textBeforeTag.Match(content).Value;
 
-            if (!string.IsNullOrWhiteSpace(textBefore))
+            var changedContent = "";
+            var matches = _textOutsideTag.Matches(content);
+            for (int i = 0; i < matches.Count; i++)
             {
-                var textNode = Node.CreateTextNode(textBefore.Trim());
+                Match current = matches.ElementAt(i);
+                                
+                if (i > 0)
+                {
+                    Match previous = matches.ElementAt(i - 1);
+                    var initial = previous.Index + previous.Length;
+                    var final = current.Index - initial;
+                    var insideContent = content.Substring(initial, final);
+                    if(!string.IsNullOrEmpty(insideContent.Trim()))
+                    {
+                        changedContent += $"<p>{insideContent}</p>";
+                    }
+                    
+                }
+                else if (current.Index > 0)
+                {
+                    var insideContent = content.Substring(0, current.Index);
+                    if (!string.IsNullOrEmpty(insideContent.Trim()))
+                    {
+                        changedContent += $"<p>{insideContent}</p>";
+                    }
+                }
+
+                changedContent += current.Value;
+            }
+
+            if (matches.Any())
+            {
+                content = changedContent;
+            }
+
+            var innerMatch = _regex.Match(content);
+            if (!innerMatch.Success)
+            {
+                var textNode = Node.CreateTextNode(content);
                 nodes.Add(textNode);
+                return nodes;
             }
 
             while (innerMatch.Success)
@@ -126,7 +161,6 @@ namespace TelegraphConnector.Parses
                 nodes.Add(innerRootTag);
                 innerMatch = innerMatch.NextMatch();
             }
-
             return nodes;
         }
     }
