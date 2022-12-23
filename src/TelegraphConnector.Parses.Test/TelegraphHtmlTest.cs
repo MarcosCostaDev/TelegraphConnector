@@ -84,7 +84,72 @@ namespace TelegraphConnector.Parses.Test
 
             var sut = TelegraphHtml.Parse(htmlContent);
 
-            //sut.Tag.Should().Be("div");
+            var firstParagraph = sut.ElementAt(1);
+            var secondParagraph = sut.ElementAt(2);
+            var header4 = sut.ElementAt(3);
+            var thirdParagraph = sut.ElementAt(4);
+
+            firstParagraph.Children[0].Tag.Should().Be("_text");
+            firstParagraph.Children[0].Value.Should().Be("This is the first paragraph. It contains a red span and a blue span.");
+
+
+            secondParagraph.Children[0].Tag.Should().Be("p");
+            secondParagraph.Children[0].Children[0].Tag.Should().Be("_text");
+            secondParagraph.Children[0].Children[0].Value.Should().Be("This is the second paragraph. It contains an ordered list:");
+
+            secondParagraph.Children[1].Tag.Should().Be("ol");
+
+            var listOrdered = secondParagraph.Children.ElementAt(1);
+            listOrdered.Children[0].Tag.Should().Be("li");
+            listOrdered.Children[0].Children[0].Value.Should().Be("Item 1");
+
+            listOrdered.Children[1].Tag.Should().Be("li");
+            listOrdered.Children[1].Children[0].Value.Should().Be("Item 2");
+
+            listOrdered.Children[2].Tag.Should().Be("li");
+            listOrdered.Children[2].Children[0].Value.Should().Be("Item 3");
+
+            secondParagraph.Children[2].Tag.Should().Be("p");
+            secondParagraph.Children[2].Children[0].Tag.Should().Be("_text");
+            secondParagraph.Children[2].Children[0].Value.Should().Be("This is a text after the list in the second paragraph.\r\n        This is another part of a paragraph");
+
+            listOrdered = secondParagraph.Children.ElementAt(3);
+            listOrdered.Children[0].Tag.Should().Be("li");
+            listOrdered.Children[0].Children[0].Value.Should().Be("Item 1");
+
+            listOrdered.Children[1].Tag.Should().Be("li");
+            listOrdered.Children[1].Children[0].Value.Should().Be("Item 2");
+
+            listOrdered.Children[2].Tag.Should().Be("li");
+            listOrdered.Children[2].Children[0].Value.Should().Be("Item 3");
+
+
+            secondParagraph.Children[4].Tag.Should().Be("p");
+            secondParagraph.Children[4].Children[0].Tag.Should().Be("_text");
+            secondParagraph.Children[4].Children[0].Value.Should().Be("This is a text after the another list in the second paragraph.");
+
+            header4.Tag.Should().Be("h4");
+            header4.Children[0].Value.Should().Be("Another list");
+
+            thirdParagraph.Children[0].Tag.Should().Be("p");
+            thirdParagraph.Children[0].Children[0].Tag.Should().Be("_text");
+            thirdParagraph.Children[0].Children[0].Value.Should().Be("This is the third paragraph. It contains an unordered list:");
+
+            thirdParagraph.Children[1].Tag.Should().Be("h4");
+            thirdParagraph.Children[1].Children[0].Tag.Should().Be("_text");
+            thirdParagraph.Children[1].Children[0].Value.Should().Be("a list");
+
+            thirdParagraph.Children[2].Tag.Should().Be("ul");
+            var listUnordered = thirdParagraph.Children.ElementAt(2);
+
+            listUnordered.Children[0].Tag.Should().Be("li");
+            listUnordered.Children[0].Children[0].Value.Should().Be("Item A");
+
+            listUnordered.Children[1].Tag.Should().Be("li");
+            listUnordered.Children[1].Children[0].Value.Should().Be("Item B");
+
+            listUnordered.Children[2].Tag.Should().Be("li");
+            listUnordered.Children[2].Children[0].Value.Should().Be("Item C");
         }
     }
 }

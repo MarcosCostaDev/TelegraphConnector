@@ -90,6 +90,7 @@ namespace TelegraphConnector.Parses
             {
                 Match current = matches.ElementAt(i);
                                 
+
                 if (i > 0)
                 {
                     Match previous = matches.ElementAt(i - 1);
@@ -112,6 +113,17 @@ namespace TelegraphConnector.Parses
                 }
 
                 changedContent += current.Value;
+
+
+                if (i == matches.Count - 1)
+                {
+                    var initial = current.Index + current.Length;
+                    var insideContent = content.Substring(initial);
+                    if (!string.IsNullOrEmpty(insideContent.Trim()))
+                    {
+                        changedContent += $"<p>{insideContent}</p>";
+                    }
+                }
             }
 
             if (matches.Any())
