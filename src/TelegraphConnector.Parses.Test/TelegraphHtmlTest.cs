@@ -1,5 +1,4 @@
 using FluentAssertions;
-using TelegraphConnector.Types;
 
 namespace TelegraphConnector.Parses.Test
 {
@@ -156,7 +155,9 @@ namespace TelegraphConnector.Parses.Test
             listOrdered.Children[2].Children[0].Value.Should().Be("Item 3");
 
             secondParagraph.Children[2].Tag.Should().Be("_text");
-            secondParagraph.Children[2].Value.Should().ContainEquivalentOf("This is a text after the list in the second paragraph.\r\n        This is another part of a paragraph");
+            secondParagraph.Children[2].Value.Should().Contain("This is a text after the list in the second paragraph.");
+            secondParagraph.Children[2].Value.Should().Contain("This is another part of a paragraph");
+            
 
             listOrdered = secondParagraph.Children.ElementAt(3);
             listOrdered.Children[0].Tag.Should().Be("li");
