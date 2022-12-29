@@ -3,6 +3,7 @@ using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -29,12 +30,12 @@ namespace TelegraphConnector.Services
         protected StringContent GetJsonContent(object obj)
         {
             var json = JsonConvert.SerializeObject(obj);
-            return GetStringContent(json);
+            return new StringContent(json, Encoding.UTF8, new MediaTypeHeaderValue("application/json"));
         }
 
-        protected StringContent GetStringContent(string json)
+        protected StringContent GetTextContent(string text)
         {
-            return new StringContent(json, Encoding.UTF8, "application/json");
+            return new StringContent(text, Encoding.UTF8, new MediaTypeHeaderValue("text/plain"));
         }
 
     }
