@@ -98,27 +98,5 @@ namespace TelegraphConnector.Test.Types
             sut.ReturnContent.Should().Be(returnContent);
         }
 
-
-        [Theory]
-        [InlineData("path", true)]
-        [InlineData("path2", false)]
-        public void Get_Must_Have_All_Fields(string path, bool returnContent)
-        {
-            var sut = Page.Get(path, returnContent);
-
-            sut.Path.Should().Be(path);
-            sut.ReturnContent.Should().Be(returnContent);
-        }
-
-        [Theory]
-        [InlineData("path")]
-        [InlineData("path2")]
-        public void GetViews_Must_Have_All_Fields(string path)
-        {
-            var sut = Page.GetViews(path);
-
-            sut.Path.Should().Be(path);
-        }
-
     }
 }
