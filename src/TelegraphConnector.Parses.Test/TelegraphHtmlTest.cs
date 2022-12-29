@@ -34,7 +34,7 @@ namespace TelegraphConnector.Parses.Test
             var thirdParagraph = sut.ElementAt(4);
 
             firstParagraph.Children[0].Tag.Should().Be("_text");
-            firstParagraph.Children[0].Value.Should().Be("This is the first paragraph. It contains a red span and a blue span.");
+            firstParagraph.Children[0].Value.Should().ContainEquivalentOf("This is the first paragraph. It contains a red span and a blue span.");
 
             secondParagraph.Children[1].Tag.Should().Be("ol");
 
@@ -48,11 +48,14 @@ namespace TelegraphConnector.Parses.Test
             listOrdered.Children[2].Tag.Should().Be("li");
             listOrdered.Children[2].Children[0].Value.Should().Be("Item 3");
 
+            secondParagraph.Children[2].Tag.Should().Be("_text");
+            secondParagraph.Children[2].Value.Should().ContainEquivalentOf("This is a text after the list in the second paragraph.");
 
-            thirdParagraph.Children[0].Tag.Should().Be("p");
-            thirdParagraph.Children[0].Children[0].Tag.Should().Be("_text");
+            thirdParagraph.Children[0].Tag.Should().Be("_text");
+            thirdParagraph.Children[0].Value.Should().ContainEquivalentOf("This is the third paragraph. It contains an unordered list:");
+            thirdParagraph.Children[1].Tag.Should().Be("h4");
+
             thirdParagraph.Children[2].Tag.Should().Be("ul");
-
             var listUnordered = thirdParagraph.Children.ElementAt(2);
 
             listUnordered.Children[0].Tag.Should().Be("li");
@@ -90,12 +93,11 @@ namespace TelegraphConnector.Parses.Test
             var thirdParagraph = sut.ElementAt(4);
 
             firstParagraph.Children[0].Tag.Should().Be("_text");
-            firstParagraph.Children[0].Value.Should().Be("This is the first paragraph. It contains a red span and a blue span.");
+            firstParagraph.Children[0].Value.Should().ContainEquivalentOf("This is the first paragraph. It contains a red span and a blue span.");
 
 
-            secondParagraph.Children[0].Tag.Should().Be("p");
-            secondParagraph.Children[0].Children[0].Tag.Should().Be("_text");
-            secondParagraph.Children[0].Children[0].Value.Should().Be("This is the second paragraph. It contains an ordered list:");
+            secondParagraph.Children[0].Tag.Should().Be("_text");
+            secondParagraph.Children[0].Value.Trim().Should().ContainEquivalentOf("This is the second paragraph. It contains an ordered list:");
 
             secondParagraph.Children[1].Tag.Should().Be("ol");
 
@@ -109,9 +111,8 @@ namespace TelegraphConnector.Parses.Test
             listOrdered.Children[2].Tag.Should().Be("li");
             listOrdered.Children[2].Children[0].Value.Should().Be("Item 3");
 
-            secondParagraph.Children[2].Tag.Should().Be("p");
-            secondParagraph.Children[2].Children[0].Tag.Should().Be("_text");
-            secondParagraph.Children[2].Children[0].Value.Should().Be("This is a text after the list in the second paragraph.\r\n        This is another part of a paragraph");
+            secondParagraph.Children[2].Tag.Should().Be("_text");
+            secondParagraph.Children[2].Value.Should().ContainEquivalentOf("This is a text after the list in the second paragraph.\r\n        This is another part of a paragraph");
 
             listOrdered = secondParagraph.Children.ElementAt(3);
             listOrdered.Children[0].Tag.Should().Be("li");
@@ -124,16 +125,14 @@ namespace TelegraphConnector.Parses.Test
             listOrdered.Children[2].Children[0].Value.Should().Be("Item 3");
 
 
-            secondParagraph.Children[4].Tag.Should().Be("p");
-            secondParagraph.Children[4].Children[0].Tag.Should().Be("_text");
-            secondParagraph.Children[4].Children[0].Value.Should().Be("This is a text after the another list in the second paragraph.");
+            secondParagraph.Children[4].Tag.Should().Be("_text");
+            secondParagraph.Children[4].Value.Should().ContainEquivalentOf("This is a text after the another list in the second paragraph.");
 
             header4.Tag.Should().Be("h4");
             header4.Children[0].Value.Should().Be("Another list");
 
-            thirdParagraph.Children[0].Tag.Should().Be("p");
-            thirdParagraph.Children[0].Children[0].Tag.Should().Be("_text");
-            thirdParagraph.Children[0].Children[0].Value.Should().Be("This is the third paragraph. It contains an unordered list:");
+            thirdParagraph.Children[0].Tag.Should().Be("_text");
+            thirdParagraph.Children[0].Value.Should().ContainEquivalentOf("This is the third paragraph. It contains an unordered list:");
 
             thirdParagraph.Children[1].Tag.Should().Be("h4");
             thirdParagraph.Children[1].Children[0].Tag.Should().Be("_text");

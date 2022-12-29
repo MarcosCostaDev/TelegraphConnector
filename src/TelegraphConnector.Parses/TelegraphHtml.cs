@@ -84,35 +84,69 @@ namespace TelegraphConnector.Parses
             var nodes = new List<Node>();
 
 
-            var changedContent = "";
             var matches = _textOutsideTag.Matches(content);
             for (int i = 0; i < matches.Count; i++)
             {
                 Match current = matches.ElementAt(i);
-                                
+                
 
                 if (i > 0)
                 {
                     Match previous = matches.ElementAt(i - 1);
                     var initial = previous.Index + previous.Length;
                     var final = current.Index - initial;
+
+
                     var insideContent = content.Substring(initial, final);
-                    if(!string.IsNullOrEmpty(insideContent.Trim()))
+
+                    if (!string.IsNullOrEmpty(insideContent.Trim()))
                     {
-                        changedContent += $"<p>{insideContent}</p>";
+                        nodes.Add(Node.CreateTextNode(insideContent));
                     }
-                    
+
                 }
                 else if (current.Index > 0)
                 {
                     var insideContent = content.Substring(0, current.Index);
                     if (!string.IsNullOrEmpty(insideContent.Trim()))
                     {
-                        changedContent += $"<p>{insideContent}</p>";
+                        nodes.Add(Node.CreateTextNode(insideContent));
                     }
                 }
 
-                changedContent += current.Value;
+                var innerMatch = _regex.Match(current.Value);
+                while (innerMatch.Success)
+                {
+                    var innerTag = innerMatch.Groups["tag"].Value;
+                    var innerContent = innerMatch.Groups["content"].Value;
+                    var innerAttributes = innerMatch.Groups["attributes"].Value;
+
+                    if (!_allowedTags.Contains(innerTag.ToLower()))
+                    {
+                        innerMatch = innerMatch.NextMatch();
+                        continue;
+                    }
+
+                    Dictionary<string, string> innerAttributeDict = new Dictionary<string, string>();
+
+                    MatchCollection innerAttributeMatches = _attributeRegex.Matches(innerAttributes);
+
+                    foreach (Match innerAttributeMatch in innerAttributeMatches)
+                    {
+                        string key = innerAttributeMatch.Groups["key"].Value;
+                        string value = innerAttributeMatch.Groups["value"].Value;
+                        innerAttributeDict.Add(key, value);
+                    }
+
+                    var innerRootTag = Node.CreateNode(innerTag, innerAttributeDict.ToArray(), null);
+
+                    var innerTagNodes = ExtractInnerTags(innerContent);
+
+                    innerRootTag.AddChildren(innerTagNodes.ToArray());
+
+                    nodes.Add(innerRootTag);
+                    innerMatch = innerMatch.NextMatch();
+                }
 
 
                 if (i == matches.Count - 1)
@@ -121,58 +155,14 @@ namespace TelegraphConnector.Parses
                     var insideContent = content.Substring(initial);
                     if (!string.IsNullOrEmpty(insideContent.Trim()))
                     {
-                        changedContent += $"<p>{insideContent}</p>";
+                        nodes.Add(Node.CreateTextNode(insideContent));
                     }
                 }
             }
 
-            if (matches.Any())
-            {
-                content = changedContent;
-            }
+            if (!nodes.Any())
+                nodes.Add(Node.CreateTextNode(content));
 
-            var innerMatch = _regex.Match(content);
-            if (!innerMatch.Success)
-            {
-                var textNode = Node.CreateTextNode(content);
-                nodes.Add(textNode);
-                return nodes;
-            }
-
-            while (innerMatch.Success)
-            {
-                string innerTag = innerMatch.Groups["tag"].Value;
-                string innerContent = innerMatch.Groups["content"].Value;
-                string innerAttributes = innerMatch.Groups["attributes"].Value;
-
-                if (!_allowedTags.Contains(innerTag.ToLower()))
-                {
-                    innerMatch = innerMatch.NextMatch();
-                    continue;
-                }
-
-                Dictionary<string, string> innerAttributeDict = new Dictionary<string, string>();
-
-                MatchCollection innerAttributeMatches = _attributeRegex.Matches(innerAttributes);
-
-                foreach (Match innerAttributeMatch in innerAttributeMatches)
-                {
-                    string key = innerAttributeMatch.Groups["key"].Value;
-                    string value = innerAttributeMatch.Groups["value"].Value;
-                    innerAttributeDict.Add(key, value);
-                }
-
-                var innerRootTag = Node.CreateNode(innerTag, innerAttributeDict.ToArray(), null);
-
-                var innerTagNodes = ExtractInnerTags(innerContent);
-
-                innerRootTag.AddChildren(innerTagNodes.ToArray());
-
-
-
-                nodes.Add(innerRootTag);
-                innerMatch = innerMatch.NextMatch();
-            }
             return nodes;
         }
     }
