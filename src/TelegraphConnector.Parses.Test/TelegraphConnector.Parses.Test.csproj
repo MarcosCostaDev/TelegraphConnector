@@ -15,10 +15,14 @@
     <None Remove="ParseFiles\example_2.md" />
     <None Remove="ParseFiles\example_3.html" />
     <None Remove="ParseFiles\example_3.md" />
+    <None Remove="ParseFiles\example_4.html" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Include="ParseFiles\example_1.md">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ParseFiles\example_4.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="ParseFiles\example_3.md">

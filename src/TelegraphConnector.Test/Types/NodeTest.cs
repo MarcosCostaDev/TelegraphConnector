@@ -66,7 +66,7 @@ namespace TelegraphConnector.Test.Types
         public void CreateAnchor_text_not_informed_exception(string text, string link)
         {
 
-            Assert.Throws<ArgumentNullException>(() => Node.CreateAnchor(text, link));
+            Assert.ThrowsAny<ArgumentException>(() => Node.CreateAnchor(text, link));
         }
 
         [Theory]
@@ -75,7 +75,7 @@ namespace TelegraphConnector.Test.Types
         public void CreateAnchor_link_not_informed_exception(string text, string link)
         {
 
-            Assert.Throws<ArgumentNullException>(() => Node.CreateAnchor(text, link));
+            Assert.ThrowsAny<ArgumentException>(() => Node.CreateAnchor(text, link));
         }
 
         [Theory]
