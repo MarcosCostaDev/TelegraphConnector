@@ -44,13 +44,12 @@ namespace TelegraphConnector.Test.Types
         }
 
         [Theory]
-        [InlineData("access_token_example", "url")]
-        public void RevokeToken_Must_Have_All_Fields(string accessToken, string authUrl)
+        [InlineData("access_token_example")]
+        public void RevokeToken_Must_Have_All_Fields(string accessToken)
         {
-            var sut = Account.RevokeToken(accessToken, authUrl);
+            var sut = Account.RevokeToken(accessToken);
 
             sut.AccessToken.Should().Be(accessToken);
-            sut.AuthUrl.Should().Be(authUrl);
         }
     }
 }

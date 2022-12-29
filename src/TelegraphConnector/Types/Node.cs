@@ -13,14 +13,25 @@ namespace TelegraphConnector.Types
         public static implicit operator string(Node node) => node.Tag == "_text" ? node.Attributes["value"] : null;
         public static implicit operator Node(string value) => string.IsNullOrEmpty(value) ? null : new(value);
 
+        /// <summary>
+        /// Name of the DOM element. Available tags: <c>a, aside, b, blockquote, br, code, em, figcaption, figure, h3, h4, hr, i, iframe, img, li, ol, p, pre, s, strong, u, ul, video</c>.
+        /// </summary>
         [JsonProperty("tag")]
         public string Tag { get; private set; }
-
+        /// <summary>
+        ///  Attributes of the DOM element. Key of object represents name of attribute, value represents value of attribute. Available attributes: <c>href, src</c>.
+        /// </summary>
         [JsonProperty("attrs")]
         public IDictionary<string, string> Attributes { get; private set; }
+        /// <summary>
+        ///  List of child nodes for the DOM element represented through a List of <see cref="Node"/>.
+        /// </summary>
         [JsonProperty("children")]
         public List<Node> Children { get; private set; }
 
+        /// <summary>
+        /// When the node has a tag <c>_text</c>, it return the DOM text.
+        /// </summary>
         [JsonIgnore]
         public string Value
         {
@@ -35,6 +46,10 @@ namespace TelegraphConnector.Types
             }
         }
 
+        /// <summary>
+        /// Represents the object
+        /// </summary>
+        /// <returns>String that contains a <see cref="Tag"/> and its content in <see cref="Value"/></returns>
         public override string ToString()
         { 
             return $"<{Tag}/> {Value}";
@@ -55,18 +70,31 @@ namespace TelegraphConnector.Types
 
         }
 
+        /// <summary>
+        /// Add <see cref="Node"/> inside your current <see cref="Node"/>
+        /// </summary>
+        /// <param name="node">A single or array of <see cref="Node"/></param>
         public void AddChildren(params Node[] node)
         {
             if (node == null) return;
             Children.AddRange(node);
         }
 
+        /// <summary>
+        /// Insert <see cref="Node"/> inside your current <see cref="Node"/>
+        /// </summary>
+        /// <param name="position">Index of array you want to insert the <see cref="Node"/></param>
+        /// <param name="node">A single or array of <see cref="Node"/></param>
         public void InsertChildren(int position, params Node[] node)
         {
             if (node == null) return;
             Children.InsertRange(position, node);
         }
 
+        /// <summary>
+        /// Add attributes to your current <see cref="Node"/>
+        /// </summary>
+        /// <param name="attributes">A single or array of <see cref="KeyValuePair{TKey, TValue}"/> of a HTML property and Value</param>
         public void AddAttributes(params KeyValuePair<string, string>[] attributes)
         {
             if (attributes == null) return;
@@ -85,7 +113,7 @@ namespace TelegraphConnector.Types
         /// 
         /// </summary>
         /// <param name="tag">Available Tags: <c>a, aside, b, blockquote, br, code, em, figcaption, figure, h3, h4, hr, i, iframe, img, li, ol, p, pre, s, strong, u, ul, video</c></param>
-        /// <param name="attributes">A array of <see cref="KeyValuePair"/> that represent property and value of a property </param>
+        /// <param name="attributes">A array of <see cref="KeyValuePair{TKey, TValue}"/> that represent property and value of a property </param>
         /// <param name="nodes">A single or array of children <see cref="Node"/></param>
         /// <returns></returns>
         public static Node CreateNode(string tag, KeyValuePair<string, string>[]? attributes, params Node[] nodes)
