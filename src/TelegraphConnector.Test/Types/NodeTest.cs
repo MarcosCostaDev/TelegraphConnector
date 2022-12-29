@@ -62,20 +62,34 @@ namespace TelegraphConnector.Test.Types
 
         [Theory]
         [InlineData(null, "http://test.com/website?webtest")]
-        [InlineData("", "http://test.com/website?webtest")]
-        public void CreateAnchor_text_not_informed_exception(string text, string link)
+        public void CreateAnchor_text_not_informed_ArgumentNullException(string text, string link)
         {
 
-            Assert.ThrowsAny<ArgumentException>(() => Node.CreateAnchor(text, link));
+            Assert.Throws<ArgumentNullException>(() => Node.CreateAnchor(text, link));
+        }
+
+        [Theory]
+        [InlineData("", "http://test.com/website?webtest")]
+        public void CreateAnchor_text_not_informed_ArgumentException(string text, string link)
+        {
+
+            Assert.Throws<ArgumentException>(() => Node.CreateAnchor(text, link));
         }
 
         [Theory]
         [InlineData("a text", "")]
-        [InlineData("text", null)]
-        public void CreateAnchor_link_not_informed_exception(string text, string link)
+        public void CreateAnchor_link_not_informed_ArgumentException(string text, string link)
         {
 
-            Assert.ThrowsAny<ArgumentException>(() => Node.CreateAnchor(text, link));
+            Assert.Throws<ArgumentException>(() => Node.CreateAnchor(text, link));
+        }
+
+        [Theory]
+        [InlineData("a text", null)]
+        public void CreateAnchor_link_not_informed_ArgumentNullException(string text, string link)
+        {
+
+            Assert.Throws<ArgumentNullException>(() => Node.CreateAnchor(text, link));
         }
 
         [Theory]
@@ -301,7 +315,7 @@ namespace TelegraphConnector.Test.Types
         {
             var textNode = Node.CreateTextNode("test");
 
-            Assert.Throws<ConnectorException>(() => Node.CreateOrderedList(textNode));
+            Assert.Throws<TelegraphConnectorException>(() => Node.CreateOrderedList(textNode));
         }
 
 
@@ -311,7 +325,7 @@ namespace TelegraphConnector.Test.Types
         {
             var textNode = Node.CreateTextNode("test");
 
-            Assert.Throws<ConnectorException>(() => Node.CreateUnorderedList(textNode));
+            Assert.Throws<TelegraphConnectorException>(() => Node.CreateUnorderedList(textNode));
         }
 
     }
