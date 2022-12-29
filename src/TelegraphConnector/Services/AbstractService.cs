@@ -1,11 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http.Headers;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace TelegraphConnector.Services
 {
@@ -13,7 +9,7 @@ namespace TelegraphConnector.Services
     {
         protected readonly ITelegraphClient _telegraphClient;
         protected readonly CancellationToken _cancellationToken;
-        public AbstractService(ITelegraphClient? telegraphClient = null, CancellationToken? cancellationToken = null)
+        protected AbstractService(ITelegraphClient? telegraphClient = null, CancellationToken? cancellationToken = null)
         {
             _telegraphClient = telegraphClient ?? new TelegraphClient();
             _cancellationToken = cancellationToken ?? CancellationToken.None;

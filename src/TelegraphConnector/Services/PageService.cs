@@ -5,6 +5,9 @@ using TelegraphConnector.Types;
 
 namespace TelegraphConnector.Services
 {
+    /// <summary>
+    /// Use <c>PageService</c> for managing your pages in the Telegraph. 
+    /// </summary>
     public class PageService : AbstractService
     {
         public PageService(ITelegraphClient? telegraphClient = null, CancellationToken? cancellationToken = null) : base(telegraphClient, cancellationToken) { }
