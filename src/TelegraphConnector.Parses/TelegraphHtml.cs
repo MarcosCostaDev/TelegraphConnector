@@ -20,7 +20,7 @@ namespace TelegraphConnector.Parses
             var result = Regex.Replace(html, "<h[2-6](.*?)>(.*?)</h[2-6]>", "<h4$1>$2</h4>", RegexOptions.Singleline);
             result = Regex.Replace(result, "<h1(.*?)>(.*?)</h1>", "<h3$1>$2</h3>", RegexOptions.Singleline);
 
-            return result;//.Replace("\r", string.Empty).Replace("\n", string.Empty);
+            return result;
         }
         private static string SanitizeHtml(string html)
         {
