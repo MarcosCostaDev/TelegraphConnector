@@ -2,7 +2,7 @@
 
 | Build | Latest Version | TelegraphConnector | TelegraphConnector.Parses |
 |--------|--------|--------|-------|
-| [![Build](https://github.com/MarcosCostaDev/TelegraphConnector/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/MarcosCostaDev/TelegraphConnector/actions/workflows/build-and-test.yml)| ![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/marcoscostadev/TelegraphConnector) | ![Nuget](https://img.shields.io/nuget/v/TelegraphConnector) | ![Nuget](https://img.shields.io/nuget/v/TelegraphConnector.Parses?logo=%20) |
+| [![Build](https://github.com/MarcosCostaDev/TelegraphConnector/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/MarcosCostaDev/TelegraphConnector/actions/workflows/build-and-test.yml)| [![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/marcoscostadev/TelegraphConnector)](https://github.com/MarcosCostaDev/TelegraphConnector/tags) | [![Nuget](https://img.shields.io/nuget/v/TelegraphConnector)](https://www.nuget.org/packages/TelegraphConnector/) | [![Nuget](https://img.shields.io/nuget/v/TelegraphConnector.Parses?logo=%20)](https://www.nuget.org/packages/TelegraphConnector.Parses/) |
 
  
 
