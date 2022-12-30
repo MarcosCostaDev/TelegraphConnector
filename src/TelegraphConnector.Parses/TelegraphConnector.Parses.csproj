@@ -16,18 +16,10 @@ With its easy-to-use methods and comprehensive documentation, TelegraphConnector
     <RepositoryUrl>https://github.com/MarcosCostaDev/TelegraphConnector.git</RepositoryUrl>
     <PackageProjectUrl>https://github.com/MarcosCostaDev/TelegraphConnector</PackageProjectUrl>
     <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
-    <PackageIcon>telegraph-icon.png</PackageIcon>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageIcon></PackageIcon>
+    <PackageReadmeFile></PackageReadmeFile>
+    <PackageTags>Telegraph;Telegram;api</PackageTags>
   </PropertyGroup>
-
-  <ItemGroup>
-    <None Include="..\..\README.md">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-    </None>
-    <None Include="..\TelegraphConnector\Icon\telegraph-icon.png" Pack="true" PackagePath=""/>
-    
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Markdig" Version="0.30.4" />
