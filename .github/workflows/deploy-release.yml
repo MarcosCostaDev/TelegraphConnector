@@ -37,14 +37,24 @@ jobs:
         # Calculate the week of the month (1-based)
         week=$(((days_since_start + 3) / 7 + 1))
 
-        if [[ $month -lt 10 ]]; then
-            week="0$month"
+        if [[ ${#month} -lt 2 ]]; then
+            month="0$month"
         fi
 
-        if [[ $week -lt 10 ]]; then
+        if [[ $week -eq 0 ]]; then
+            week="01"
+        fi
+        
+        if [[  ${#week} -lt 2 ]]; then
             week="0$week"
         fi
-                
+
+        # NuGet Org does not support zero in left side of version number
+        # https://learn.microsoft.com/en-us/nuget/concepts/package-versioning#normalized-version-numbers 
+        # Work around is add a 1 before the portion of version
+        month="1$month" 
+        week="1$week" 
+
         version="$year.$month.$week$BUILD_NUMBER"
 
         if [[ "${{ github.ref }}" == "refs/heads/pre-release" ]]; then
