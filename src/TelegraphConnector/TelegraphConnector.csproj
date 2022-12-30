@@ -48,10 +48,7 @@ With easy-to-use methods and comprehensive documentation, TelegraphConnector is 
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Icon\telegraph-icon.png">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-    </None>
+    <None Update="Icon\telegraph-icon.png"  Pack="true" PackagePath=""/>
   </ItemGroup>
 
 </Project>
