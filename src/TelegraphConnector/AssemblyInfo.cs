@@ -12,6 +12,7 @@ using System;
 using System.Reflection;
 
 [assembly: System.Runtime.CompilerServices.InternalsVisibleTo("TelegraphConnector.Test")]
+[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("TelegraphConnector.Parses.Test")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("MarcosCostaDev")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyCopyrightAttribute("MarcosCostaDev © 2022")]

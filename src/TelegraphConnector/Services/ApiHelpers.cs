@@ -77,18 +77,30 @@ namespace TelegraphConnector.Services
         }
     }
 
-
-    public class TelegraphResponse<TType> where TType : AbstractTypes
+    /// <summary>
+    /// The default response from API Telegraph Services, See <see cref="TelegraphResponse">TelegraphResponse</see> for leaning more.
+    /// </summary>
+    /// <typeparam name="TType">This type defines the Result property type of this object. 
+    /// The result can be a 
+    /// <see cref="Account">Account</see>, 
+    /// <see cref="Page">Page</see>,
+    /// <see cref="PageViews">PageViews</see>
+    /// <see cref="PageTotal">PageTotal</see>
+    /// <see cref="Node">Node</see>
+    /// </typeparam>
+    public class TelegraphResponse<TType> : TelegraphResponse where TType : AbstractTypes
     {
-        public bool Ok { get; private set; }
-        public string Error { get; private set; }
         public TType Result { get; private set; }
     }
-    public class TelegraphResponse
+
+    /// <summary>
+    /// It has the default messages from the API. Expect to receive a boolean in the <c>Ok</c> property, this means that the request was successfully executed.
+    /// otherwise, the property will be false and the <c>Error</c> property will have the error message.
+    /// </summary>
+    public abstract class TelegraphResponse
     {
-        public bool Ok { get; private set; }
-        public string Error { get; private set; }
-        public dynamic Result { get; private set; }
+        public bool Ok { get; protected set; }
+        public string Error { get; protected set; }
     }
 
 }

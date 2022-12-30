@@ -5,10 +5,11 @@ namespace TelegraphConnector.Parses
 {
     public class TelegraphHtml
     {
-        private static readonly Regex _regex = new Regex("<(?<tag>[^\\s>]+)(?<attributes>\\s[^>]+)?>(?<content>.+?)</\\k<tag>>", RegexOptions.Singleline);
-        private static readonly Regex _attributeRegex = new Regex(@"\s(?<key>[^\s=]+)=['""](?<value>.+?)['""]", RegexOptions.Singleline);
-        private static readonly Regex _bodyRegex = new Regex("<body>(?<content>.+?)</body>", RegexOptions.Singleline);
-        private static readonly Regex _beforeAfterTagRegex = new Regex("(?<before>.+?)<[^>]+>(?<after>.+?)", RegexOptions.Singleline);
+        private static readonly Regex _regex = new(@"<(?<tag>[^\s>]+)(?<attributes>\s[^>]+)?>(?<content>.+?)</\k<tag>>", RegexOptions.Singleline);
+        private static readonly Regex _regexSelfEnclosing = new(@"<(?<tag>\w+)(?<attributes>[^>]*?)\s*/>", RegexOptions.Singleline);
+        private static readonly Regex _attributeRegex = new(@"\s(?<key>[^\s=]+)=['""](?<value>.+?)['""]", RegexOptions.Singleline);
+        private static readonly Regex _bodyRegex = new("<body>(?<content>.+?)</body>", RegexOptions.Singleline);
+        private static readonly Regex _textOutsideTag = new(@"(?<innerTags><([^>]+?)([^>]*?)>(.*?)<\/\1>)", RegexOptions.Singleline); // <([^>]+?)([^>]*?)>(.*?)<\/\1>
         private static readonly string[] _allowedTags = new string[]
         {
             "a", "aside", "b", "blockquote", "br", "code", "em", "figcaption",
@@ -31,6 +32,7 @@ namespace TelegraphConnector.Parses
         }
         public static IEnumerable<Node> Parse(string html)
         {
+            ArgumentNullException.ThrowIfNullOrEmpty(html, nameof(html));
 
             var nodes = new List<Node>();
             Match bodyMatch = _bodyRegex.Match(html);
@@ -79,13 +81,84 @@ namespace TelegraphConnector.Parses
         private static IEnumerable<Node> ExtractInnerTags(string content)
         {
 
+            content = content.Trim();
             var nodes = new List<Node>();
-            Match innerMatch = _regex.Match(content);
+
+
+            var matches = _textOutsideTag.Matches(content);
+            for (int i = 0; i < matches.Count; i++)
+            {
+                Match current = matches.ElementAt(i);
+
+
+                if (i > 0)
+                {
+                    Match previous = matches.ElementAt(i - 1);
+                    var initial = previous.Index + previous.Length;
+                    var final = current.Index - initial;
+
+
+                    var insideContent = content.Substring(initial, final);
+
+                    if (!string.IsNullOrEmpty(insideContent.Trim()))
+                    {
+                        nodes.Add(Node.CreateTextNode(insideContent));
+                    }
+
+                }
+                else if (current.Index > 0)
+                {
+                    var insideContent = content.Substring(0, current.Index);
+                    if (!string.IsNullOrEmpty(insideContent.Trim()))
+                    {
+                        nodes.Add(Node.CreateTextNode(insideContent));
+                    }
+                }
+
+                var contentNodes = GetContentNodes(current.Value);
+
+                nodes.AddRange(contentNodes);
+
+                if (i == matches.Count - 1)
+                {
+                    var initial = current.Index + current.Length;
+                    var insideContent = content.Substring(initial);
+                    if (!string.IsNullOrEmpty(insideContent.Trim()))
+                    {
+                        nodes.Add(Node.CreateTextNode(insideContent));
+                    }
+                }
+            }
+
+            if (!nodes.Any())
+            {
+                var contentNodes = GetSelfEncloseNodes(content);
+                if (contentNodes.Any())
+                {
+                    nodes.AddRange(contentNodes);
+                }
+                else
+                {
+                    nodes.Add(Node.CreateTextNode(content));
+                }
+                
+
+            }
+
+
+            return nodes;
+        }
+
+        private static List<Node> GetContentNodes(string content)
+        {
+            var nodes = new List<Node>();
+            var innerMatch = _regex.Match(content);
+
             while (innerMatch.Success)
             {
-                string innerTag = innerMatch.Groups["tag"].Value;
-                string innerContent = innerMatch.Groups["content"].Value;
-                string innerAttributes = innerMatch.Groups["attributes"].Value;
+                var innerTag = innerMatch.Groups["tag"].Value;
+                var innerContent = innerMatch.Groups["content"].Value;
+                var innerAttributes = innerMatch.Groups["attributes"].Value;
 
                 if (!_allowedTags.Contains(innerTag.ToLower()))
                 {
@@ -110,62 +183,46 @@ namespace TelegraphConnector.Parses
 
                 innerRootTag.AddChildren(innerTagNodes.ToArray());
 
-                Match matchBeforeAfter = _beforeAfterTagRegex.Match(content);
-
-                if (matchBeforeAfter.Success)
-                {
-                    var before = matchBeforeAfter.Groups["before"].Value;
-                    var after = matchBeforeAfter.Groups["after"].Value;
-
-                    if (!string.IsNullOrEmpty(before?.Trim()))
-                    {
-                        var textNodeBefore = Node.CreateTextNode(before.Trim());
-                        innerRootTag.InsertChildren(0, textNodeBefore);
-                    }
-
-                    if (!string.IsNullOrEmpty(after?.Trim()))
-                    {
-                        var textNodeAfter = Node.CreateTextNode(after);
-
-                        innerRootTag.AddChildren(textNodeAfter);
-                    }
-                }
-
                 nodes.Add(innerRootTag);
                 innerMatch = innerMatch.NextMatch();
             }
 
-            if (!innerMatch.Success && !string.IsNullOrEmpty(content))
+            return nodes;
+        }
+
+        private static List<Node> GetSelfEncloseNodes(string content)
+        {
+            var nodes = new List<Node>();
+            var innerMatch = _regexSelfEnclosing.Match(content);
+
+            while (innerMatch.Success)
             {
-                Match matchBeforeAfter = _beforeAfterTagRegex.Match(content);
+                var innerTag = innerMatch.Groups["tag"].Value;
+                var innerAttributes = innerMatch.Groups["attributes"].Value;
 
-                if (matchBeforeAfter.Success)
+                if (!_allowedTags.Contains(innerTag.ToLower()))
                 {
-                    var before = matchBeforeAfter.Groups["before"].Value;
-                    var after = matchBeforeAfter.Groups["after"].Value;
-
-                    if (!string.IsNullOrEmpty(before?.Trim()))
-                    {
-                        var textNodeBefore = Node.CreateTextNode(before.Trim());
-                        nodes.Insert(0, textNodeBefore);
-                    }
-
-                    if (!string.IsNullOrEmpty(after?.Trim()))
-                    {
-                        var textNodeAfter = Node.CreateTextNode(after);
-
-                        nodes.Add(textNodeAfter);
-                    }
-                }
-                else
-                {
-                    var textNode = Node.CreateTextNode(content);
-                    nodes.Add(textNode);
+                    innerMatch = innerMatch.NextMatch();
+                    continue;
                 }
 
+                Dictionary<string, string> innerAttributeDict = new Dictionary<string, string>();
+
+                MatchCollection innerAttributeMatches = _attributeRegex.Matches(innerAttributes);
+
+                foreach (Match innerAttributeMatch in innerAttributeMatches)
+                {
+                    string key = innerAttributeMatch.Groups["key"].Value;
+                    string value = innerAttributeMatch.Groups["value"].Value;
+                    innerAttributeDict.Add(key, value);
+                }
+
+                var innerRootTag = Node.CreateNode(innerTag, innerAttributeDict.ToArray(), null);
+
+                nodes.Add(innerRootTag);
+
+                innerMatch = innerMatch.NextMatch();
             }
-
-
 
             return nodes;
         }

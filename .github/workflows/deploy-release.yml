@@ -103,9 +103,10 @@ jobs:
         name: nugetPackage
     - name: Prep packages
       run: dotnet nuget add source --username MarcosCostaDev --password ${{ secrets.GH_KEY }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/marcoscostadev/index.json"
-    - name: Push package to GitHub packages 
+    - name: Push pre-release package to GitHub packages 
       run: dotnet nuget push nugetPackage/**/*.nupkg --api-key ${{ secrets.GH_KEY }}  --source "github"
-
+    - name: Push pre-release package to Nuget Org 
+      run: dotnet nuget push nugetPackage/**/*.nupkg --api-key ${{ secrets.NUGET_KEY }}  --source "https://api.nuget.org/v3/index.json"
   release:
     runs-on: ubuntu-latest    
     needs: build
