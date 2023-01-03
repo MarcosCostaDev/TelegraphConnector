@@ -3,11 +3,12 @@
 | Build | Latest Version | TelegraphConnector | TelegraphConnector.Parses |
 |--------|--------|--------|-------|
 | [![Build](https://github.com/MarcosCostaDev/TelegraphConnector/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/MarcosCostaDev/TelegraphConnector/actions/workflows/build-and-test.yml)| ![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/marcoscostadev/TelegraphConnector) | [![Nuget](https://img.shields.io/nuget/v/TelegraphConnector)](https://www.nuget.org/packages/TelegraphConnector/) | [![Nuget](https://img.shields.io/nuget/v/TelegraphConnector.Parses?logo=%20)](https://www.nuget.org/packages/TelegraphConnector.Parses/) |
+| | | ![Nuget](https://img.shields.io/nuget/dt/TelegraphConnector) | ![Nuget](https://img.shields.io/nuget/dt/TelegraphConnector.Parses) |
 
  
 
 
-Introducing TelegraphConnector - the Nuget package that makes it easy to communicate with the Telegra.ph API. With this package, you can easily create and publish web pages using resources from Telegra.ph, giving you access to a wide range of features and functionality.
+Introducing TelegraphConnector - the Nuget package that makes it easy to communicate with the [Telegra.ph](https://telegram.org/blog/telegraph) [API](https://telegra.ph/api) for enabling the [Telegram instant view](https://telegram.org/blog/instant-view) for a HTML, Markdown or text files. With this package, you can easily create and publish web pages using resources from Telegra.ph, giving you access to a wide range of features and functionality.
 
 Whether you want to publish articles, or share multimedia content, TelegraphConnector makes it simple and straightforward to do so. Simply install the package, create or authenticate with your Telegra.ph account, and start building your web page for use in the Telegram instant view feature.
 
